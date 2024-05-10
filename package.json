@@ -5,8 +5,8 @@
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node bin/server.js",
-    "build": "node ace build",
+    "start": "ENV_PATH=../ node bin/server.js",
+    "build": "node ace build --no-assets",
     "dev": "node ace serve --watch",
     "test": "node ace test",
     "lint": "eslint .",
@@ -41,6 +41,7 @@
     "@japa/plugin-adonisjs": "^3.0.1",
     "@japa/runner": "^3.1.4",
     "@swc/core": "^1.4.16",
+    "@types/luxon": "^3.4.2",
     "@types/node": "^20.12.7",
     "eslint": "^8.57.0",
     "hot-hook": "^0.2.1",
@@ -55,6 +56,8 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^20.5.1",
     "@vinejs/vine": "^2.0.0",
+    "luxon": "^3.4.4",
+    "pg": "^8.11.5",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {
