@@ -32,6 +32,13 @@ jobs:
       - name: Build Node
         run: npm run build
 
+      - name: set fake .env
+        run: |
+             touch .env
+             echo "HOST=0.0.0.0" >> .env
+             echo "LOG_LEVEL=info" >> .env
+             echo "APP_KEY=1111-1111-1111-1111" >> .env
+
       - name: Run Tests
         run: npm run test
 
