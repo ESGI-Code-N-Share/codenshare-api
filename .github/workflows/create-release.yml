@@ -40,29 +40,33 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Fetch Project Version
-        id: fetch_project_version
+        id: extract_project_version
         run: |
           sudo apt-get update && sudo apt-get install jq
           version=$(jq -r '.version' package.json)
           echo "$version"
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       # https://github.com/actions/create-release
       - name: Create Release On Github
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.fetch_project_version.outputs.version }}
-          release_name: Release ${{ steps.fetch_project_version.outputs.version }}
-          body: |
-            ${{ inputs.release-description }}
-          draft: false
-          prerelease: false
+        run: |
+              VERSION="${{ steps.extract_project_version.outputs.version }}"
+              echo $VERSION
+
+#        uses: actions/create-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ steps.fetch_project_version.outputs.version }}
+#          release_name: Release ${{ steps.fetch_project_version.outputs.version }}
+#          body: |
+#            ${{ inputs.release-description }}
+#          draft: false
+#          prerelease: false
 
 #  build_image_and_deploy_it:
-#    needs: create_release  # Failed if create_release failed
+#    needs: create_release
 #    runs-on: ubuntu-latest
 #
 #    env:
@@ -70,8 +74,10 @@ jobs:
 #      REPOSITORY: ${{ secrets.DOCKER_HUB_REGISTRY }}/codenshare-api
 #
 #    steps:
+#      - name: Chek env
+#        run : echo $TEST
 #      - uses: actions/checkout@v4
-
+#
 #      # https://github.com/docker/login-action
 #      - name: Log in to Docker Hub
 #        uses: docker/login-action@v3
@@ -84,6 +90,6 @@ jobs:
 #        uses: docker/build-push-action@v5
 #        with:
 #          context: .
-#          file: ${{ env.DOCKERFILE }}
+#          file: Dockerfile
 #          push: true
 #          tags: ${{ env.REPOSITORY }}:${{ steps.fetch_project_version.outputs.version }}
