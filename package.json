@@ -5,10 +5,11 @@
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node bin/server.js",
-    "build": "node ace build",
+    "start": "ENV_PATH=../ node bin/server.js",
+    "build": "node ace build --no-assets",
     "dev": "node ace serve --watch",
     "test": "node ace test",
+    "migration": "node ace migration:run",
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit"
