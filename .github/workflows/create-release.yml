@@ -50,20 +50,16 @@ jobs:
       # https://github.com/actions/create-release
       - name: Create Release On Github
         id: create_release
-        run: |
-              VERSION="${{ steps.extract_project_version.outputs.version }}"
-              echo $VERSION
-
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag_name: ${{ steps.fetch_project_version.outputs.version }}
-#          release_name: Release ${{ steps.fetch_project_version.outputs.version }}
-#          body: |
-#            ${{ inputs.release-description }}
-#          draft: false
-#          prerelease: false
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.extract_project_version.outputs.version }}
+          release_name: Release ${{ steps.extract_project_version.outputs.version }}
+          body: |
+            ${{ inputs.release-description }}
+          draft: false
+          prerelease: false
 
 #  build_image_and_deploy_it:
 #    needs: create_release
