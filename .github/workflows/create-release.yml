@@ -74,6 +74,10 @@ jobs:
       VERSION: ${{needs.create_release.outputs.version}}
 
     steps:
+      # https://github.com/actions/checkout
+      - name: Init Checkout
+        uses: actions/checkout@v4
+
       - name: Set Fake .env
         run: |
           touch .env
@@ -87,9 +91,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_LOGIN }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - name: test
-        run : ls
 
         # https://github.com/docker/build-push-action
       - name: Push Docker image with release version
