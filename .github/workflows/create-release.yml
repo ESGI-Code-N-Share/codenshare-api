@@ -1,0 +1,83 @@
+name: Create Release
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      release-description:
+        description: 'Release Description'
+        required: true
+
+
+permissions:
+  contents: read
+
+jobs:
+  build_and_test:
+    uses: ./.github/workflows/ci.yml
+
+  sonar:
+    name: sonar
+    needs: build_and_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check
+        run: echo OK
+
+#  create_release:
+#    runs-on: ubuntu-latest
+#    steps:
+#      # https://github.com/actions/checkout
+#      - name: Init Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Fetch projet version
+#        id: fetch_project_version
+#        run: |
+#          sudo apt-get update && sudo apt-get install jq
+#          version=$(jq -r '.version' package.json)
+#          echo "$version"
+#          echo "::set-output name=version::$version"
+#
+#      # https://github.com/actions/create-release
+#      - name: Create Release
+#        id: create_release
+#        uses: actions/create-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+#        with:
+#          tag_name: ${{ steps.fetch_project_version.outputs.version }}
+#          release_name: Release ${{ steps.fetch_project_version.outputs.version }}
+#          body: |
+#            ${{ inputs.release-description }}
+#          draft: false
+#          prerelease: false
+
+#  build_image_and_deploy_image_on_docker_hub:
+#    needs: create_release  # Failed if create_release failed
+#    runs-on: ubuntu-latest
+#
+#    env:
+#      DOCKERFILE: Dockerfile
+#      REPOSITORY: ${{ secrets.DOCKER_HUB_REGISTRY }}/codenshare-api
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      # https://github.com/docker/login-action
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ secrets.DOCKER_HUB_LOGIN }}
+#          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+#
+#        # https://github.com/docker/build-push-action
+#      - name: Push Docker image with release version
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: .
+#          file: ${{ env.DOCKERFILE }}
+#          push: true
+#          tags: ${{ env.REPOSITORY }}:${{ steps.fetch_project_version.outputs.version }}
