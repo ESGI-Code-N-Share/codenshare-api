@@ -15,43 +15,53 @@ jobs:
   build_and_test:
     uses: ./.github/workflows/ci.yml
 
-  sonar:
-    name: sonar
-    needs: build_and_test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: check
-        run: echo OK
-
-#  create_release:
+#  todo sonar:
+#    name: sonar
+#    needs: build_and_test
 #    runs-on: ubuntu-latest
+#
 #    steps:
 #      # https://github.com/actions/checkout
-#      - name: Init Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Fetch projet version
-#        id: fetch_project_version
-#        run: |
-#          sudo apt-get update && sudo apt-get install jq
-#          version=$(jq -r '.version' package.json)
-#          echo "$version"
-#          echo "::set-output name=version::$version"
-#
-#      # https://github.com/actions/create-release
-#      - name: Create Release
-#        id: create_release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+#      - uses: actions/checkout@v4
 #        with:
-#          tag_name: ${{ steps.fetch_project_version.outputs.version }}
-#          release_name: Release ${{ steps.fetch_project_version.outputs.version }}
-#          body: |
-#            ${{ inputs.release-description }}
-#          draft: false
-#          prerelease: false
+#          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+#
+#      # https://github.com/SonarSource/sonarcloud-github-action
+#      - name: Sonar Scan
+#        uses: SonarSource/sonarcloud-github-action@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - name: Init Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch Project Version
+        id: fetch_project_version
+        run: |
+          sudo apt-get update && sudo apt-get install jq
+          version=$(jq -r '.version' package.json)
+          echo "$version"
+          echo "::set-output name=version::$version"
+
+      # https://github.com/actions/create-release
+      - name: Create Release On Github
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.fetch_project_version.outputs.version }}
+          release_name: Release ${{ steps.fetch_project_version.outputs.version }}
+          body: |
+            ${{ inputs.release-description }}
+          draft: false
+          prerelease: false
 
 #  build_image_and_deploy_image_on_docker_hub:
 #    needs: create_release  # Failed if create_release failed

@@ -32,7 +32,7 @@ jobs:
       - name: Build Node
         run: npm run build
 
-      - name: set fake .env
+      - name: Set Fake .env
         run: |
              touch .env
              echo "HOST=0.0.0.0" >> .env
