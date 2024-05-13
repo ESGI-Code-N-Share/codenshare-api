@@ -34,6 +34,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_test
 
+    outputs:
+      version: ${{ steps.extract_project_version.outputs.version }}
+
     steps:
       # https://github.com/actions/checkout
       - name: Init Checkout
@@ -61,17 +64,18 @@ jobs:
           draft: false
           prerelease: false
 
-#  build_image_and_deploy_it:
-#    needs: create_release
-#    runs-on: ubuntu-latest
-#
-#    env:
-#      DOCKERFILE: Dockerfile
-#      REPOSITORY: ${{ secrets.DOCKER_HUB_REGISTRY }}/codenshare-api
-#
-#    steps:
-#      - name: Chek env
-#        run : echo $TEST
+  build_image_and_deploy_it:
+    needs: create_release
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKERFILE: Dockerfile
+      REPOSITORY: ${{ secrets.DOCKER_HUB_REGISTRY }}/codenshare-api
+      VERSION: ${{needs.create_release.outputs.version}}
+
+    steps:
+      - name: Chek env
+        run : echo $VERSION
 #      - uses: actions/checkout@v4
 #
 #      # https://github.com/docker/login-action
