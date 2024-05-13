@@ -7,10 +7,6 @@ on:
         description: 'Release Description'
         required: true
 
-
-permissions:
-  contents: read
-
 jobs:
   build_and_test:
     uses: ./.github/workflows/ci.yml
