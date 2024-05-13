@@ -64,7 +64,7 @@ jobs:
           draft: false
           prerelease: false
 
-  build_image_and_deploy_it:
+  build_image_and_deploy_on_docker_hub:
     needs: create_release
     runs-on: ubuntu-latest
 
@@ -74,22 +74,25 @@ jobs:
       VERSION: ${{needs.create_release.outputs.version}}
 
     steps:
-      - name: Chek env
-        run : echo $VERSION
-#      - uses: actions/checkout@v4
-#
-#      # https://github.com/docker/login-action
-#      - name: Log in to Docker Hub
-#        uses: docker/login-action@v3
-#        with:
-#          username: ${{ secrets.DOCKER_HUB_LOGIN }}
-#          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-#
-#        # https://github.com/docker/build-push-action
-#      - name: Push Docker image with release version
-#        uses: docker/build-push-action@v5
-#        with:
-#          context: .
-#          file: Dockerfile
-#          push: true
-#          tags: ${{ env.REPOSITORY }}:${{ steps.fetch_project_version.outputs.version }}
+      - name: Set Fake .env
+        run: |
+          touch .env
+          echo "HOST=0.0.0.0" >> .env
+          echo "LOG_LEVEL=info" >> .env
+          echo "APP_KEY=1111-1111-1111-1111" >> .env
+
+      # https://github.com/docker/login-action
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_LOGIN }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+        # https://github.com/docker/build-push-action
+      - name: Push Docker image with release version
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ env.REPOSITORY }}:${{ env.VERSION }}
