@@ -1,11 +1,12 @@
-import Program, {ProgramId} from '#models/program'
-import {inject} from '@adonisjs/core'
-import {randomUUID} from 'node:crypto'
+import Program, { ProgramId } from '#models/program'
+import { inject } from '@adonisjs/core'
+import { randomUUID } from 'node:crypto'
 import User from '#models/user'
+import { EDCService } from '#services/edc_service'
 
 @inject()
 export class ProgramService {
-  constructor() {}
+  constructor(private readonly edcService: EDCService) {}
 
   async create(): Promise<ProgramId> {
     const programId = randomUUID() as ProgramId
@@ -59,10 +60,16 @@ export class ProgramService {
     return program
   }
 
-  async run(programId: ProgramId, _instructions: {}, _files: any, mode: 'debug' | 'run' = 'run') {
-    const program = await this.find(programId)
-    console.log(`Running program ${program.programId} in ${mode} mode`)
+  async run(programId: string, code: string, language: string, version: string) {
+    console.log(`Running program ${programId}`)
 
-    // todo run the program
+    try {
+      const result = await this.edcService.executeCode(programId, code, language, version)
+      console.log(`Execution result: ${result}`)
+      return result
+    } catch (e) {
+      console.error(`Error executing program ${programId}: ${e.message}`)
+      throw new Error(`Failed to execute program: ${e.message}`)
+    }
   }
 }

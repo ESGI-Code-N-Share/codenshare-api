@@ -26,3 +26,5 @@ yarn-error.log
 /.env.test
 /.env.production
 /.env.development
+
+package-lock.json

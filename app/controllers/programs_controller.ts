@@ -1,6 +1,6 @@
-import {HttpContext} from '@adonisjs/core/http'
-import {inject} from '@adonisjs/core'
-import {ProgramService} from '#services/program_service'
+import { HttpContext } from '@adonisjs/core/http'
+import { inject } from '@adonisjs/core'
+import { ProgramService } from '#services/program_service'
 
 @inject()
 export default class ProgramsController {
@@ -47,13 +47,20 @@ export default class ProgramsController {
 
   async run({ response, params, request }: HttpContext) {
     const programId = params.programId
-    const body = request.all() // todo files are here
-    const instructions = body.instructions // va servir à définir comment utiliser les inputs
+    const body = request.all()
+    const code = body.code
+    const language = body.language
+    const version = body.version
 
-    console.log(body)
-    // run the program
-    // todo suggestion, y'a d'autre moyen. ProgramService ou un EDCService ?
-    const result = await this.programsService.run(programId, instructions, {}, body.mode)
-    return response.json({ result })
+    try {
+      const result = await this.programsService.run(programId, code, language, version)
+      return response.json(result)
+    } catch (error) {
+      console.error(`Failed to run program ${programId}: ${error.message}`)
+      return response.status(500).json({
+        message: 'Failed to execute the program',
+        error: error.message,
+      })
+    }
   }
 }
