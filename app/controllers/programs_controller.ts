@@ -57,9 +57,10 @@ export default class ProgramsController {
       return response.json(result)
     } catch (error) {
       console.error(`Failed to run program ${programId}: ${error.message}`)
-      return response.status(500).json({
+      response.status(400).json({
         message: 'Failed to execute the program',
         error: error.message,
+        details: error.details,
       })
     }
   }

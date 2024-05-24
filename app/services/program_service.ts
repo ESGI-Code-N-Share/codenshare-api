@@ -64,12 +64,12 @@ export class ProgramService {
     console.log(`Running program ${programId}`)
 
     try {
-      const result = await this.edcService.executeCode(programId, code, language, version)
+      const result = await this.edcService.executeCode(programId, code, language, version);
       console.log(`Execution result: ${result}`)
       return result
     } catch (e) {
       console.error(`Error executing program ${programId}: ${e.message}`)
-      throw new Error(`Failed to execute program: ${e.message}`)
+      throw new Error(`ExecutionError: ${e.message}`)
     }
   }
 }
