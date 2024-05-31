@@ -4,6 +4,8 @@ import Post, { type PostId } from '#domains/posts/post_model'
 import { DateTime } from 'luxon'
 
 export class PostRepositoryImpl implements PostRepositoryPort {
+  constructor() {}
+
   async getAll(): Promise<Post[]> {
     const posts = await PostEntity.query().preload('author').whereNull('deletedAt')
     return posts.map((post) => post.toDomain())
