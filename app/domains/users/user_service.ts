@@ -1,6 +1,6 @@
 import { User, UserId } from '#domains/users/user_model'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
-import { UserRepositoryImpl } from '../../infrastructure/orm/lucid/repositories/user_repository_impl.js'
+import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
 import { inject } from '@adonisjs/core'
 import { SearchUserDto } from '#domains/users/user_dto'
 

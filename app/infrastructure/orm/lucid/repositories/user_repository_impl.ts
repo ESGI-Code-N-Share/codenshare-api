@@ -1,5 +1,5 @@
 import { type UserRepositoryPort } from '#domains/users/user_repository'
-import UserEntity from '../models/user_entity.js'
+import UserEntity from '../entities/user_entity.js'
 import { User, type UserId } from '#domains/users/user_model'
 
 export class UserRepositoryImpl implements UserRepositoryPort {
