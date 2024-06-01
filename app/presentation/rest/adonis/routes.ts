@@ -9,9 +9,14 @@
 
 import router from '@adonisjs/core/services/router'
 
+// const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
 const UserController = () => import('#presentation/rest/adonis/controllers/user_controller')
 const PostController = () => import('#presentation/rest/adonis/controllers/post_controller')
 const FriendController = () => import('#presentation/rest/adonis/controllers/friend_controller')
+
+const authRouter = () => {
+  // router.post('/auth/login', [AuthController, ''])
+}
 
 const userRouter = () => {
   router.get('/users/search', [UserController, 'search'])
@@ -32,6 +37,7 @@ const friendRouter = () => {
 
 router
   .group(() => {
+    authRouter()
     userRouter()
     postRouter()
     friendRouter()
