@@ -14,6 +14,8 @@ const UserController = () => import('#presentation/rest/adonis/controllers/user_
 const PostController = () => import('#presentation/rest/adonis/controllers/post_controller')
 const FriendController = () => import('#presentation/rest/adonis/controllers/friend_controller')
 const MessageController = () => import('#presentation/rest/adonis/controllers/message_controller')
+const ProgramController = () =>
+  import('#presentation/rest/adonis/controllers/program/program_controller')
 const ConversationController = () =>
   import('#presentation/rest/adonis/controllers/conversation_controller')
 
@@ -48,6 +50,16 @@ const userRouter = () => {
   conversationRouter()
 }
 
+const programRouter = () => {
+  router.get('/programs/search', [ProgramController, 'search'])
+  router.get('/programs', [ProgramController, 'list'])
+  router.get('/programs/:programId', [ProgramController, 'find'])
+  router.post('/programs', [ProgramController, 'create'])
+  router.delete('/programs/:programId', [ProgramController, 'delete'])
+  router.patch('/programs/:programId', [ProgramController, 'update'])
+  router.post('/programs/:programId/import', [ProgramController, 'import'])
+}
+
 const postRouter = () => {
   router.get('/posts', [PostController, 'list'])
   router.post('/posts', [PostController, 'create'])
@@ -63,6 +75,7 @@ router
   .group(() => {
     authRouter()
     userRouter()
+    programRouter()
     postRouter()
     friendRouter()
   })
