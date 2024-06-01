@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { type ProgramId } from '#domains/program/program_model'
 import { column, BaseModel } from '@adonisjs/lucid/orm'
-import { CodeHistory, type CodeHistoryId } from '#domains/program/codeHistory/code_history.model'
+import { CodeHistory, type CodeHistoryId } from '#domains/program/codeHistory/code_history_model'
 
 export default class CodeHistoryEntity extends BaseModel {
   static table = 'code_histories'

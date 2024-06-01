@@ -1,7 +1,7 @@
 import { Program } from '#domains/program/program_model'
 import { inject } from '@adonisjs/core'
-import { CodeHistory } from '#domains/program/codeHistory/code_history.model'
-import { CodeHistoryRepositoryImpl } from '#infrastructure/orm/lucid/repositories/codeHistory_repository_impl'
+import { CodeHistory } from '#domains/program/codeHistory/code_history_model'
+import { CodeHistoryRepositoryImpl } from '#infrastructure/orm/lucid/repositories/code_history_repository_impl'
 
 @inject()
 export class CodeHistoryService {

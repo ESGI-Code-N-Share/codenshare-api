@@ -2,7 +2,7 @@ import { Program, ProgramId } from '#domains/program/program_model'
 
 export type CodeHistoryId = string
 import { randomUUID } from 'node:crypto'
-import CodeHistoryEntity from '#infrastructure/orm/lucid/entities/codeHistory_entity'
+import CodeHistoryEntity from '#infrastructure/orm/lucid/entities/code_history_entity'
 
 export class CodeHistory {
   codeHistoryId: CodeHistoryId
