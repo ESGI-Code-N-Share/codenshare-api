@@ -13,7 +13,7 @@ export default class PostController {
   async list({ response }: HttpContext) {
     try {
       const posts = await this.postService.getAll()
-      return response.json(posts)
+      return response.json({ data: posts })
     } catch (e) {
       console.error(e)
       return response.status(500).send({ message: e.message || e.code })
@@ -40,8 +40,8 @@ export default class PostController {
 
   async delete({ params, response }: HttpContext) {
     try {
-      await this.postService.delete(params.postId)
-      return response.status(204)
+      const postId = await this.postService.delete(params.postId)
+      return response.status(200).send({ data: postId })
     } catch (e) {
       console.error(e)
       return response.status(404).send({ message: e.message || e.code })

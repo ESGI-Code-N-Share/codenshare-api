@@ -7,7 +7,7 @@ export interface ProgramServicePort {
   getProgram(id: ProgramId): Promise<GetProgramRequest>
   getAllByUser(userId: UserId): Promise<GetProgramsRequest[]>
   search(content: string): Promise<GetProgramsRequest[]>
-  createDefault(userId: UserId): Promise<void>
+  createDefault(userId: UserId): Promise<ProgramId>
   update(
     id: ProgramId,
     name: string,
@@ -18,6 +18,7 @@ export interface ProgramServicePort {
     visibility: ProgramVisibility,
     userId: UserId
   ): Promise<void>
-  delete(id: ProgramId, userId: UserId): Promise<void>
+
+  delete(id: ProgramId, userId: UserId): Promise<ProgramId>
   import(id: ProgramId, userId: UserId): Promise<void>
 }

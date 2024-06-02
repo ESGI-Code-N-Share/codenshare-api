@@ -7,7 +7,10 @@ export class PostRepositoryImpl implements PostRepositoryPort {
   constructor() {}
 
   async getAll(): Promise<Post[]> {
-    const posts = await PostEntity.query().preload('author').whereNull('deletedAt')
+    const posts = await PostEntity.query()
+      .preload('author')
+      .whereNull('deletedAt')
+      .orderBy('posted_at', 'desc')
     return posts.map((post) => post.toDomain())
   }
 

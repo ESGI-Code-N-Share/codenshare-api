@@ -7,7 +7,8 @@ export interface ProgramRepositoryPort {
   getProgramsByUser(user: User): Promise<Program[]>
   getProgramsByName(name: string): Promise<Program[]>
   getProgramsByDescription(description: string): Promise<Program[]>
-  create(programEntity: ProgramEntity): Promise<void>
+  create(programEntity: ProgramEntity): Promise<ProgramId>
   update(programEntity: ProgramEntity): Promise<void>
-  delete(id: ProgramId): Promise<void>
+
+  delete(id: ProgramId): Promise<ProgramId>
 }

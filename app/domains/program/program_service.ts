@@ -40,13 +40,13 @@ export class ProgramService implements ProgramServicePort {
     return Array.from(uniquePrograms).map((program) => program.toGetProgramsRequest())
   }
 
-  async createDefault(userId: UserId): Promise<void> {
+  async createDefault(userId: UserId): Promise<ProgramId> {
     const user: User = await this.userService.getById(userId)
 
-    const defaultPictureName = 'default' // todo to change
+    const defaultPictureName = `https://picsum.photos/536/${Math.floor(Math.random() * 536)}`
     const newProgram = Program.default(defaultPictureName, 'private', user, user)
 
-    await this.programRepository.create(newProgram.toEntity())
+    return this.programRepository.create(newProgram.toEntity())
   }
 
   async update(
@@ -87,7 +87,7 @@ export class ProgramService implements ProgramServicePort {
     await this.programRepository.update(program.toEntity())
   }
 
-  async delete(id: ProgramId, userId: UserId): Promise<void> {
+  async delete(id: ProgramId, userId: UserId): Promise<ProgramId> {
     const user = await this.userService.getById(userId)
     const program = await this.getById(id)
 
@@ -95,7 +95,7 @@ export class ProgramService implements ProgramServicePort {
       throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
     }
 
-    await this.programRepository.delete(id)
+    return await this.programRepository.delete(id)
   }
 
   async import(id: ProgramId, userId: UserId): Promise<void> {

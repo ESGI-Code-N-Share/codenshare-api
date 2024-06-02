@@ -4,6 +4,7 @@ export interface GetProgramRequest {
   id: string
   name: string
   description: string
+  code: string
   imageURL: string
   visibility: string
   authorName: string

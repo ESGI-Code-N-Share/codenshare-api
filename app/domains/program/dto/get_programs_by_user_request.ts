@@ -1,5 +1,5 @@
 export interface GetProgramsRequest {
-  id: string
+  programId: string
   name: string
   description: string
   imageURL: string

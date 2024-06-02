@@ -20,7 +20,7 @@ export default class ProgramController {
     try {
       const validQuery = await programsValidator.validate(request.qs())
       const programs = await this.programService.getAllByUser(validQuery.userId)
-      return response.status(200).json(programs)
+      return response.status(200).json({ data: programs })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -29,8 +29,8 @@ export default class ProgramController {
 
   async find({ response, params }: HttpContext) {
     try {
-      const programs = await this.programService.getProgram(params.programId)
-      return response.status(200).json(programs)
+      const program = await this.programService.getProgram(params.programId)
+      return response.status(200).json({ data: program })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -52,8 +52,8 @@ export default class ProgramController {
     try {
       const data = request.all()
       const validProgram = await createProgramValidator.validate(data)
-      await this.programService.createDefault(validProgram.authorId)
-      return response.status(201)
+      const programId = await this.programService.createDefault(validProgram.authorId)
+      return response.status(201).send({ data: programId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -65,8 +65,8 @@ export default class ProgramController {
       const data = request.all()
       const validProgram = await programsValidator.validate(data)
 
-      await this.programService.delete(params.programId, validProgram.userId)
-      return response.status(200)
+      const programId = await this.programService.delete(params.programId, validProgram.userId)
+      return response.status(200).send({ data: programId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

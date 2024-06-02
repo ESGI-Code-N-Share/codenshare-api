@@ -9,6 +9,7 @@ import { GetProgramRequest } from '#domains/program/dto/get_program_request'
 import { GetProgramsRequest } from '#domains/program/dto/get_programs_by_user_request'
 
 export type ProgramId = string
+export type ProgramLanguages = 'c' | 'java' | 'javascript' | string
 export type ProgramVisibility = 'public' | 'protected' | 'private'
 
 export class Program {
@@ -17,7 +18,7 @@ export class Program {
   code: string
   description: string
   pictureName: string
-  language: string
+  language: ProgramLanguages
   programVisibility: ProgramVisibility
   author: User
   originalAuthor: User
@@ -79,7 +80,7 @@ export class Program {
   ) {
     return new Program(
       randomUUID(),
-      '',
+      'Nouveau programme',
       '',
       '',
       pictureName,
@@ -135,7 +136,7 @@ export class Program {
 
   toGetProgramsRequest(): GetProgramsRequest {
     return {
-      id: this.programId,
+      programId: this.programId,
       name: this.name,
       description: this.description,
       imageURL: this.pictureName,
@@ -149,6 +150,7 @@ export class Program {
       name: this.name,
       description: this.description,
       imageURL: this.pictureName,
+      code: this.code,
       visibility: this.programVisibility.toString(),
       authorName: this.author.firstname,
       authorLastName: this.author.lastname,
