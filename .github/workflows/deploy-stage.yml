@@ -8,7 +8,31 @@ on:
         required: true
 
 jobs:
+  run_migration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.docker-tag }}
+
+      # https://github.com/actions/setup-node
+      - name: Set Up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm i
+
+      - name: Configure .env stage configuration
+        run: echo "${{ secrets.ENV_CONFIG }}" > .env
+
+      - name: Run migration on database
+        run: npm run migration
+
   build_image_and_deploy_image_on_docker_hub:
+    needs: run_migration
     runs-on: ubuntu-latest
 
     env:
@@ -20,13 +44,8 @@ jobs:
         with:
           ref: ${{ inputs.docker-tag }}
 
-
-      - name: Set Fake .env
-        run: |
-          touch .env
-          echo "HOST=0.0.0.0" >> .env
-          echo "LOG_LEVEL=info" >> .env
-          echo "APP_KEY=1111-1111-1111-1111" >> .env
+      - name: Configure .env stage configuration
+        run: echo "${{ secrets.ENV_CONFIG }}" > .env
 
       # https://github.com/docker/login-action
       - name: Log in to Docker Hub
