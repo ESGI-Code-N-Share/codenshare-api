@@ -77,6 +77,8 @@ const postRouter = () => {
 }
 
 const friendRouter = () => {
+  router.get('/friends/followers', [FriendController, 'getFollowersByUser'])
+  router.get('/friends/following', [FriendController, 'getFollowingByUser'])
   router.post('/friends', [FriendController, 'create'])
   router.delete('/friends', [FriendController, 'delete'])
 }

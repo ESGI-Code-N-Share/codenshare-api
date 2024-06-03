@@ -13,6 +13,28 @@ export default class FriendController {
     this.friendService = friendService
   }
 
+  async getFollowersByUser({ request, response }: HttpContext) {
+    try {
+      const userId = request.qs().userId
+      const followers = await this.friendService.getFollowersByUser(userId)
+      return response.send({ data: followers })
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({ message: e.message })
+    }
+  }
+
+  async getFollowingByUser({ request, response }: HttpContext) {
+    try {
+      const userId = request.qs().userId
+      const following = await this.friendService.getFollowingByUser(userId)
+      return response.send({ data: following })
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({ message: e.message })
+    }
+  }
+
   async create({ request, response }: HttpContext) {
     try {
       const data = request.all()
@@ -21,8 +43,8 @@ export default class FriendController {
         followerId: validFriend.followerId,
         followedId: validFriend.followedId,
       }
-      await this.friendService.follow(friendCreateDto)
-      return response.status(201)
+      const friend = await this.friendService.follow(friendCreateDto)
+      return response.status(201).send({ data: friend })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -37,8 +59,11 @@ export default class FriendController {
         followerId: validFriend.followerId,
         followedId: validFriend.followedId,
       }
-      await this.friendService.unfollow(friendDeleteDto.followerId, friendDeleteDto.followedId)
-      return response.status(204)
+      const friendId = await this.friendService.unfollow(
+        friendDeleteDto.followerId,
+        friendDeleteDto.followedId
+      )
+      return response.status(204).send({ data: friendId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

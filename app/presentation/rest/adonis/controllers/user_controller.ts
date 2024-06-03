@@ -17,7 +17,7 @@ export default class UserController {
         query: validQuery.query,
       }
       const users = await this.userService.search(searchUserDto)
-      return response.status(200).json(users)
+      return response.status(200).json({ data: users })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -27,7 +27,7 @@ export default class UserController {
   async find({ response, params }: HttpContext) {
     try {
       const user = await this.userService.getById(params.userId)
-      return response.status(200).send(user)
+      return response.status(200).send({ data: user })
     } catch (e) {
       console.error(e)
       return response.status(404)
@@ -37,7 +37,7 @@ export default class UserController {
   async delete({ response, params }: HttpContext) {
     try {
       await this.userService.delete(params.userId)
-      return response.status(204)
+      return response.status(204).send({ data: null })
     } catch (e) {
       console.error(e)
       return response.status(404)
