@@ -27,5 +27,3 @@ COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/.env ../
 COPY --from=build /app/build /app
 CMD ["npm", "start"]
-
-# todo add migration
