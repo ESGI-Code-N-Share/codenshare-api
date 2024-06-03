@@ -6,6 +6,22 @@ import FriendEntity from '#infrastructure/orm/lucid/entities/friend_entity'
 export class FriendRepositoryImpl implements FriendRepositoryPort {
   constructor() {}
 
+  async getFollowersByUser(user: User): Promise<Friend[]> {
+    const friends = await FriendEntity.query()
+      .where('addressedTo', user.userId)
+      .preload('sender')
+      .preload('receiver')
+    return friends.map((friend) => friend.toDomain())
+  }
+
+  async getFollowingByUser(user: User): Promise<Friend[]> {
+    const friends = await FriendEntity.query()
+      .where('requestedBy', user.userId)
+      .preload('receiver')
+      .preload('sender')
+    return friends.map((friend) => friend.toDomain())
+  }
+
   async isFollowing(follower: User, followed: User): Promise<boolean> {
     const friend = await FriendEntity.query()
       .where('requestedBy', follower.userId)

@@ -15,6 +15,16 @@ export class FriendService {
     this.friendRepository = friendRepository
   }
 
+  async getFollowersByUser(userId: UserId) {
+    const user = await this.userRepository.getById(userId)
+    return this.friendRepository.getFollowersByUser(user)
+  }
+
+  async getFollowingByUser(userId: UserId) {
+    const user = await this.userRepository.getById(userId)
+    return this.friendRepository.getFollowingByUser(user)
+  }
+
   async follow(friendCreateDto: CreateFriendDto) {
     const { followerId, followedId } = friendCreateDto
     const follower = await this.userRepository.getById(followerId)
