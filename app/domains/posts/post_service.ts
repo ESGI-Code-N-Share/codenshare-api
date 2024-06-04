@@ -4,6 +4,7 @@ import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_
 import { PostException, PostMessageException } from '#domains/posts/post_exception'
 import { PostRepositoryImpl } from '#infrastructure/orm/lucid/repositories/post_repository_impl'
 import { inject } from '@adonisjs/core'
+import { UserId } from '#domains/users/user_model'
 
 @inject()
 export class PostService {
@@ -16,6 +17,10 @@ export class PostService {
 
   async getAll(): Promise<Post[]> {
     return this.postRepository.getAll()
+  }
+
+  async getByUser(userId: UserId): Promise<Post[]> {
+    return this.postRepository.getByUser(userId)
   }
 
   async getById(postId: PostId): Promise<Post> {

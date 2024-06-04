@@ -10,8 +10,13 @@ export default class PostController {
     this.postService = postService
   }
 
-  async list({ response }: HttpContext) {
+  async list({ response, request }: HttpContext) {
     try {
+      const queries = request.qs()
+      if (queries.userId) {
+        const posts = await this.postService.getByUser(queries.userId)
+        return response.json({ data: posts })
+      }
       const posts = await this.postService.getAll()
       return response.json({ data: posts })
     } catch (e) {
