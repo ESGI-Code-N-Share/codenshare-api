@@ -52,6 +52,10 @@ export class ConversationService {
 
   async leave(leaveConversationDto: DeleteConversationDto): Promise<ConversationId> {
     const { conversationId, userId } = leaveConversationDto
+    const conversation = await this.getById(conversationId)
+    if (conversation.owner.userId === userId) {
+      return this.conversationRepository.delete(conversationId)
+    }
     return this.conversationRepository.removeUser(conversationId, userId)
   }
 }

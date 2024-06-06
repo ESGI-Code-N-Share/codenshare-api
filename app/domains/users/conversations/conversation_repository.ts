@@ -9,4 +9,6 @@ export interface ConversationRepositoryPort {
   create(conversation: Conversation): Promise<Conversation>
 
   removeUser(conversationId: ConversationId, memberId: UserId): Promise<ConversationId>
+
+  delete(conversationId: ConversationId): Promise<ConversationId>
 }
