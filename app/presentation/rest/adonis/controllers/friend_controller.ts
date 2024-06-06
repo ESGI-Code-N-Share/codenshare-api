@@ -63,7 +63,7 @@ export default class FriendController {
         friendDeleteDto.followerId,
         friendDeleteDto.followedId
       )
-      return response.status(204).send({ data: friendId })
+      return response.status(200).send({ data: friendId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
