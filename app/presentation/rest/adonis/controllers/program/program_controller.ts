@@ -95,12 +95,12 @@ export default class ProgramController {
         validProgram.name,
         validProgram.description,
         validProgram.pictureURL,
-        validProgram.code,
+        validProgram.code || '',
         validProgram.language,
         validProgram.visibility as ProgramVisibility,
         validProgram.authorId
       )
-      return response.status(200)
+      return response.status(200).send({ data: params.programId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

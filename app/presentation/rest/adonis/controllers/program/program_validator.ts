@@ -14,13 +14,13 @@ export const searchProgramsValidator = vine.compile(
 
 export const updateProgramsValidator = vine.compile(
   vine.object({
-    authorId: vine.string().trim().minLength(1),
+    authorId: vine.string().uuid().trim(),
     name: vine.string().trim().minLength(1),
-    description: vine.string().trim().minLength(1),
-    pictureURL: vine.string().trim().minLength(1),
-    visibility: vine.string().trim().minLength(1),
-    language: vine.string().trim().minLength(1),
-    code: vine.string().trim().minLength(1),
+    description: vine.string().trim(),
+    pictureURL: vine.string().trim().url(),
+    visibility: vine.string().trim().in(['public', 'private', 'protected']),
+    language: vine.string().trim(),
+    code: vine.string().trim().optional(),
   })
 )
 

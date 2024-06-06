@@ -14,6 +14,15 @@ export class PostRepositoryImpl implements PostRepositoryPort {
     return posts.map((post) => post.toDomain())
   }
 
+  async getByUser(userId: string): Promise<Post[]> {
+    const posts = await PostEntity.query()
+      .preload('author')
+      .where('authorId', userId)
+      .whereNull('deletedAt')
+      .orderBy('posted_at', 'desc')
+    return posts.map((post) => post.toDomain())
+  }
+
   async getById(postId: string): Promise<Post> {
     const post = await PostEntity.query()
       .preload('author')

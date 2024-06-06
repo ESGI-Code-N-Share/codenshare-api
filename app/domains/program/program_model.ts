@@ -146,11 +146,13 @@ export class Program {
 
   toGetProgramRequest(): GetProgramRequest {
     return {
-      id: this.programId,
+      programId: this.programId,
       name: this.name,
       description: this.description,
       imageURL: this.pictureName,
       code: this.code,
+      authorId: this.author.userId,
+      language: this.language,
       visibility: this.programVisibility.toString(),
       authorName: this.author.firstname,
       authorLastName: this.author.lastname,
