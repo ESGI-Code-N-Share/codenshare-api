@@ -36,8 +36,12 @@ export class ProgramService implements ProgramServicePort {
     const programsByName = await this.programRepository.getProgramsByName(content)
     const programsByDescription = await this.programRepository.getProgramsByDescription(content)
 
-    const uniquePrograms = new Set([...programsByName, ...programsByDescription])
-    return Array.from(uniquePrograms).map((program) => program.toGetProgramsRequest())
+    const uniqueProgramsMap = new Map<string, Program>()
+
+    programsByName.forEach((program) => uniqueProgramsMap.set(program.programId, program))
+    programsByDescription.forEach((program) => uniqueProgramsMap.set(program.programId, program))
+
+    return Array.from(uniqueProgramsMap.values()).map((program) => program.toGetProgramsRequest())
   }
 
   async createDefault(userId: UserId): Promise<ProgramId> {
