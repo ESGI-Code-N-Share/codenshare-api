@@ -14,8 +14,13 @@ export class UserService {
     const query = searchUserDto.query
     const usersByEmail = await this.userRepository.searchByEmail(query)
     const usersByFirstnameOrLastname = await this.userRepository.searchByFirstnameOrLastname(query)
-    const uniqueUsers = new Set([...usersByEmail, ...usersByFirstnameOrLastname])
-    return Array.from(uniqueUsers)
+
+    const uniqueUsersMap = new Map<string, User>()
+
+    usersByEmail.forEach((user) => uniqueUsersMap.set(user.userId, user))
+    usersByFirstnameOrLastname.forEach((user) => uniqueUsersMap.set(user.userId, user))
+
+    return Array.from(uniqueUsersMap.values())
   }
 
   async getById(userId: UserId): Promise<User> {

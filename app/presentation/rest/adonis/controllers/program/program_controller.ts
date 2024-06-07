@@ -41,7 +41,7 @@ export default class ProgramController {
     try {
       const validQuery = await searchProgramsValidator.validate(request.qs())
       const programs = await this.programService.search(validQuery.query)
-      return response.status(200).json(programs)
+      return response.status(200).json({ data: programs })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
