@@ -1,5 +1,6 @@
 import { User } from '#domains/users/user_model'
 import { randomUUID } from 'node:crypto'
+import { PostLike } from '#domains/posts/post_like/post_like_model'
 
 export type PostId = string
 
@@ -9,6 +10,7 @@ export default class Post {
   content: string
   image?: string
   author: User
+  likes: PostLike[]
   postedAt: Date
 
   private constructor(
@@ -17,6 +19,7 @@ export default class Post {
     content: string,
     author: User,
     postedAt: Date,
+    postLikes: PostLike[],
     image?: string
   ) {
     this.postId = postId
@@ -24,6 +27,7 @@ export default class Post {
     this.content = content
     this.image = image
     this.author = author
+    this.likes = postLikes
     this.postedAt = postedAt
   }
 
@@ -34,7 +38,7 @@ export default class Post {
     image?: string,
     postedAt: Date = new Date()
   ): Post {
-    return new Post(randomUUID(), title, content, author, postedAt, image)
+    return new Post(randomUUID(), title, content, author, postedAt, [], image)
   }
 
   static fromPersistence(data: {
@@ -43,8 +47,17 @@ export default class Post {
     content: string
     author: User
     postedAt: Date
+    likes: PostLike[]
     image?: string
   }): Post {
-    return new Post(data.postId, data.title, data.content, data.author, data.postedAt, data.image)
+    return new Post(
+      data.postId,
+      data.title,
+      data.content,
+      data.author,
+      data.postedAt,
+      data.likes,
+      data.image
+    )
   }
 }
