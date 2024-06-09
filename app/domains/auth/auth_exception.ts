@@ -1,6 +1,8 @@
 export enum AuthMessageException {
   USER_WITH_CREDENTIALS_NOT_FOUND = 'User with credentials not found',
+  WRONG_PASSWORD = 'Wrong password for this account',
   USER_WITH_EMAIL_ALREADY_EXISTS = 'User with email already exists',
+  REGISTRATION_FAILED = 'Registration failed',
 }
 
 export class AuthException extends Error {

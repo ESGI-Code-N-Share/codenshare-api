@@ -2,7 +2,7 @@ import { User, UserId } from '#domains/users/user_model'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
 import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
 import { inject } from '@adonisjs/core'
-import { SearchUserDto } from '#domains/users/user_dto'
+import { CreateUserDto, SearchUserDto } from '#domains/users/user_dto'
 
 @inject()
 export class UserService {
@@ -29,5 +29,22 @@ export class UserService {
   async delete(userId: UserId): Promise<void> {
     const user = await this.getById(userId)
     return this.userRepository.delete(user.userId)
+  }
+
+  async getByEmail(email: string): Promise<User | null> {
+    try {
+      return await this.userRepository.getByEmail(email)
+    } catch (error) {
+      throw new UserException(UserMessageException.USER_NOT_FOUND)
+    }
+  }
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      return await this.userRepository.create(createUserDto)
+    } catch (error) {
+      console.error('Registration Error:', error)
+      throw new UserException(UserMessageException.USER_CREATION_FAILED)
+    }
   }
 }

@@ -8,9 +8,8 @@
 */
 
 import router from '@adonisjs/core/services/router'
-import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
-
-// const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
+// import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
+const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
 const UserController = () => import('#presentation/rest/adonis/controllers/user_controller')
 const PostController = () => import('#presentation/rest/adonis/controllers/post_controller')
 const FriendController = () => import('#presentation/rest/adonis/controllers/friend_controller')
@@ -20,18 +19,18 @@ const ProgramController = () =>
 const ConversationController = () =>
   import('#presentation/rest/adonis/controllers/conversation_controller')
 
-const authRouter = () => {
-  router.post('/auth/login', async ({ request, response }) => {
-    try {
-      const { email } = request.all()
-      const userRepo = new UserRepositoryImpl()
-      const users = await userRepo.searchByEmail(email)
-      response.send({ data: users[0] })
-    } catch (e) {
-      console.error(e)
-    }
-  })
-}
+// const authRouter = () => {
+//   router.post('/auth/login', async ({ request, response }) => {
+//     try {
+//       const { email } = request.all()
+//       const userRepo = new UserRepositoryImpl()
+//       const users = await userRepo.searchByEmail(email)
+//       response.send({ data: users[0] })
+//     } catch (e) {
+//       console.error(e)
+//     }
+//   })
+// }
 
 const messageRouter = () => {
   router
@@ -81,6 +80,11 @@ const friendRouter = () => {
   router.get('/friends/following', [FriendController, 'getFollowingByUser'])
   router.post('/friends', [FriendController, 'create'])
   router.delete('/friends', [FriendController, 'delete'])
+}
+
+const authRouter = () => {
+  router.post('/login', [AuthController, 'login'])
+  router.post('/register', [AuthController, 'register'])
 }
 
 router
