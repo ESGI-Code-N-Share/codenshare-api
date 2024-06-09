@@ -19,6 +19,8 @@ const ProgramController = () =>
   import('#presentation/rest/adonis/controllers/program/program_controller')
 const ConversationController = () =>
   import('#presentation/rest/adonis/controllers/conversation_controller')
+const PostLikeController = () =>
+  import('#presentation/rest/adonis/controllers/post_like_controller')
 
 const authRouter = () => {
   router.post('/auth/login', async ({ request, response }) => {
@@ -70,10 +72,20 @@ const programRouter = () => {
   router.post('/programs/:programId/import', [ProgramController, 'import'])
 }
 
+const postLikeRouter = () => {
+  router
+    .group(() => {
+      router.post('/likes', [PostLikeController, 'create'])
+      router.delete('/likes', [PostLikeController, 'delete'])
+    })
+    .prefix('/posts/:postId')
+}
+
 const postRouter = () => {
   router.get('/posts', [PostController, 'list'])
   router.post('/posts', [PostController, 'create'])
   router.delete('/posts/:postId', [PostController, 'delete'])
+  postLikeRouter()
 }
 
 const friendRouter = () => {
