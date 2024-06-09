@@ -140,6 +140,7 @@ export class Program {
       name: this.name,
       description: this.description,
       imageURL: this.pictureName,
+      authorId: this.author.userId,
       visibility: this.programVisibility.toString(),
     }
   }
