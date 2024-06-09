@@ -9,6 +9,7 @@ export class PostRepositoryImpl implements PostRepositoryPort {
   async getAll(): Promise<Post[]> {
     const posts = await PostEntity.query()
       .preload('author')
+      .preload('likes')
       .whereNull('deletedAt')
       .orderBy('posted_at', 'desc')
     return posts.map((post) => post.toDomain())
@@ -17,6 +18,7 @@ export class PostRepositoryImpl implements PostRepositoryPort {
   async getByUser(userId: string): Promise<Post[]> {
     const posts = await PostEntity.query()
       .preload('author')
+      .preload('likes')
       .where('authorId', userId)
       .whereNull('deletedAt')
       .orderBy('posted_at', 'desc')
@@ -26,6 +28,7 @@ export class PostRepositoryImpl implements PostRepositoryPort {
   async getById(postId: string): Promise<Post> {
     const post = await PostEntity.query()
       .preload('author')
+      .preload('likes')
       .where('postId', postId)
       .whereNull('deletedAt')
       .firstOrFail()
@@ -43,6 +46,7 @@ export class PostRepositoryImpl implements PostRepositoryPort {
     const savedPost = await PostEntity.query()
       .where('postId', newPost.postId)
       .preload('author')
+      .preload('likes')
       .firstOrFail()
     return savedPost.toDomain()
   }
