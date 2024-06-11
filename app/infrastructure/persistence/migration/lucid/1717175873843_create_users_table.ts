@@ -1,4 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
+import Hash from '@adonisjs/core/services/hash'
 
 export default class extends BaseSchema {
   protected tableName = 'users'
@@ -51,19 +52,22 @@ export default class extends BaseSchema {
 
   protected async createDefaultUser() {
     this.defer(async (db) => {
-      await db.insertQuery().table(this.tableName).insert({
-        user_id: '22222222-2222-2222-2222-222222222222',
-        email: 'c.lechene@gmail.com',
-        password: 'adminfiters',
-        firstname: 'Corentin',
-        lastname: 'Lechene',
-        avatar: 'https://randomuser.me/api/portraits/men/9.jpg',
-        birthdate: '1990-01-01',
-        role: 'user',
-        overview: 'Lead developer at CNS',
-        created_at: new Date(),
-        updated_at: new Date(),
-      })
+      await db
+        .insertQuery()
+        .table(this.tableName)
+        .insert({
+          user_id: '22222222-2222-2222-2222-222222222222',
+          email: 'c.lechene@gmail.com',
+          password: await Hash.make('adminfiters'),
+          firstname: 'Corentin',
+          lastname: 'Lechene',
+          avatar: 'https://randomuser.me/api/portraits/men/9.jpg',
+          birthdate: '1990-01-01',
+          role: 'user',
+          overview: 'Lead developer at CNS',
+          created_at: new Date(),
+          updated_at: new Date(),
+        })
     })
   }
 }

@@ -36,10 +36,7 @@ export class UserRepositoryImpl implements UserRepositoryPort {
   }
 
   async getByEmail(email: string): Promise<User | null> {
-    const user = await UserEntity.query()
-      .where('email', email)
-      .whereNull('deleted_at')
-      .first()
+    const user = await UserEntity.query().where('email', email).whereNull('deleted_at').first()
     return user ? user.toDomain() : null
   }
 

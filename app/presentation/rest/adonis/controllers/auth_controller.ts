@@ -21,10 +21,7 @@ export default class AuthController {
         password: validData.password,
       }
       const user = await this.authService.login(loginAuthDto)
-      return response.status(200).json({
-        message: 'Vous êtes connecté',
-        data: user,
-      })
+      return response.status(200).json({ data: user })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -41,11 +38,8 @@ export default class AuthController {
         password: validData.password,
         birthdate: new Date(validData.birthdate),
       }
-      const user = await this.authService.register(registerAuthDto)
-      return response.status(201).json({
-        message: 'Vous êtes inscris',
-        data: user,
-      })
+      const userId = await this.authService.register(registerAuthDto)
+      return response.status(201).json({ data: userId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
