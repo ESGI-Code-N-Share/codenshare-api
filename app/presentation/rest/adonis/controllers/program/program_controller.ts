@@ -106,4 +106,17 @@ export default class ProgramController {
       return response.status(400).send({ message: e.message })
     }
   }
+
+  async run({ request, response, params }: HttpContext) {
+    try {
+      const data = request.all()
+      const info = await programsValidator.validate(data)
+
+      const result = await this.programService.execute(params.programId, info.userId)
+      return response.status(200).send({ data: result })
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({ message: e.message })
+    }
+  }
 }
