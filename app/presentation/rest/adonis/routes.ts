@@ -23,7 +23,7 @@ const PostLikeController = () =>
   import('#presentation/rest/adonis/controllers/post_like_controller')
 
 const authRouter = () => {
-  router.post('/auth/login', async ({ request, response }) => {
+  router.post('/login', async ({ request, response }) => {
     try {
       const { email } = request.all()
       const userRepo = new UserRepositoryImpl()
