@@ -6,9 +6,7 @@ import { SearchUserDto } from '#domains/users/user_dto'
 
 @inject()
 export class UserService {
-  constructor(private readonly userRepository: UserRepositoryImpl) {
-    this.userRepository = userRepository
-  }
+  constructor(private readonly userRepository: UserRepositoryImpl) {}
 
   async search(searchUserDto: SearchUserDto): Promise<User[]> {
     const query = searchUserDto.query
