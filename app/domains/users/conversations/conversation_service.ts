@@ -1,16 +1,16 @@
 import { inject } from '@adonisjs/core'
 import {
-  ByUserDto,
   CreateConversationDto,
   DeleteConversationDto,
 } from '#domains/users/conversations/conversation_dto'
+import { UserId } from '#domains/users/user_model'
 import { Conversation, ConversationId } from '#domains/users/conversations/conversation_model'
 import { ConversationRepositoryImpl } from '#infrastructure/orm/lucid/repositories/conversation_repository_impl'
 import { UserService } from '#domains/users/user_service'
 import {
   ConversationException,
   ConversationMessageException,
-} from '#domains/users/conversations/messages/conversation_exception'
+} from '#domains/users/conversations/conversation_exception'
 
 @inject()
 export class ConversationService {
@@ -21,8 +21,8 @@ export class ConversationService {
     this.conversationRepository = conversationRepository
   }
 
-  async getByUser(byUserDto: ByUserDto): Promise<Conversation[]> {
-    return this.conversationRepository.getByUser(byUserDto.userId)
+  async getByUser(userId: UserId): Promise<Conversation[]> {
+    return this.conversationRepository.getByUser(userId)
   }
 
   async getById(conversationId: ConversationId): Promise<Conversation> {
