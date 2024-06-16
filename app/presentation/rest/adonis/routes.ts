@@ -70,6 +70,7 @@ const programRouter = () => {
   router.delete('/programs/:programId', [ProgramController, 'delete'])
   router.patch('/programs/:programId', [ProgramController, 'update'])
   router.post('/programs/:programId/import', [ProgramController, 'import'])
+  router.post('/programs/:programId/run', [ProgramController, 'run'])
 }
 
 const postLikeRouter = () => {
