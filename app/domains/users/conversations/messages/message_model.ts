@@ -4,7 +4,7 @@ import { ConversationId } from '#domains/users/conversations/conversation_model'
 
 export type MessageId = string
 
-export default class Message {
+export class Message {
   messageId: MessageId
   content: string
   conversationId: ConversationId

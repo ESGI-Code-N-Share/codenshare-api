@@ -1,7 +1,7 @@
 import { User } from '#domains/users/user_model'
 
 export class UserSample {
-  static new(userData: Partial<User>) {
+  static new(userData: Partial<User>): User {
     return {
       userId: userData.userId ?? '1',
       email: userData.email ?? 'jhon.doe@email.com',

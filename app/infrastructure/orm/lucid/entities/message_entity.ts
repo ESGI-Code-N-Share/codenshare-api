@@ -3,7 +3,7 @@ import { type UserId } from '#domains/users/user_model'
 import UserEntity from '#infrastructure/orm/lucid/entities/user_entity'
 import { type BelongsTo } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
-import Message from '#domains/users/conversations/messages/message_model'
+import { Message } from '#domains/users/conversations/messages/message_model'
 import ConversationEntity from '#infrastructure/orm/lucid/entities/conversation_entity'
 
 export default class MessageEntity extends BaseModel {

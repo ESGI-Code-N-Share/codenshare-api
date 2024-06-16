@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/core'
 import { MessageRepositoryImpl } from '#infrastructure/orm/lucid/repositories/message_repository_impl'
-import Message from '#domains/users/conversations/messages/message_model'
+import { Message } from '#domains/users/conversations/messages/message_model'
 import { ConversationId } from '#domains/users/conversations/conversation_model'
 import { UserService } from '#domains/users/user_service'
 import { ConversationService } from '#domains/users/conversations/conversation_service'

@@ -1,6 +1,6 @@
 import { User } from '#domains/users/user_model'
 import { randomUUID } from 'node:crypto'
-import Message from '#domains/users/conversations/messages/message_model'
+import { Message } from '#domains/users/conversations/messages/message_model'
 
 export type ConversationId = string
 
