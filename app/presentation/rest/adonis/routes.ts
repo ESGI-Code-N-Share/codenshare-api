@@ -23,7 +23,7 @@ const PostLikeController = () =>
   import('#presentation/rest/adonis/controllers/post_like_controller')
 
 const authRouter = () => {
-  router.post('/auth/login', async ({ request, response }) => {
+  router.post('/login', async ({ request, response }) => {
     try {
       const { email } = request.all()
       const userRepo = new UserRepositoryImpl()
@@ -70,6 +70,7 @@ const programRouter = () => {
   router.delete('/programs/:programId', [ProgramController, 'delete'])
   router.patch('/programs/:programId', [ProgramController, 'update'])
   router.post('/programs/:programId/import', [ProgramController, 'import'])
+  router.post('/programs/:programId/run', [ProgramController, 'run'])
 }
 
 const postLikeRouter = () => {
