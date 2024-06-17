@@ -1,8 +1,8 @@
 import Post, { type PostId } from '#domains/posts/post_model'
 import { CreatePostDto } from '#domains/posts/post_dto'
-import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
 import { PostException, PostMessageException } from '#domains/posts/post_exception'
 import { PostRepositoryImpl } from '#infrastructure/orm/lucid/repositories/post_repository_impl'
+import { UserService } from '#domains/users/user_service'
 import { inject } from '@adonisjs/core'
 import { UserId } from '#domains/users/user_model'
 
@@ -10,7 +10,7 @@ import { UserId } from '#domains/users/user_model'
 export class PostService {
   constructor(
     private readonly postRepository: PostRepositoryImpl,
-    private readonly userRepository: UserRepositoryImpl
+    private readonly userService: UserService
   ) {
     this.postRepository = postRepository
   }
@@ -32,7 +32,7 @@ export class PostService {
   }
 
   async create(postDto: CreatePostDto): Promise<Post> {
-    const user = await this.userRepository.getById(postDto.authorId)
+    const user = await this.userService.getById(postDto.authorId)
     const post = Post.new(postDto.title, postDto.content, user, postDto.image)
     return this.postRepository.create(post)
   }
