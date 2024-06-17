@@ -1,5 +1,5 @@
 import { test } from '@japa/runner'
-import {UserException, UserMessageException} from "#domains/users/user_exception";
+import { UserException, UserMessageException } from '#domains/users/user_exception'
 
 test.group('UserException', () => {
   test('should create a UserException with the correct message', ({ assert }) => {
