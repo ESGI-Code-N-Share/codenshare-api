@@ -32,6 +32,9 @@ export class PostService {
   }
 
   async create(postDto: CreatePostDto): Promise<Post> {
+    if (!postDto.authorId || !postDto.title || !postDto.content) {
+      throw new PostException(PostMessageException.INVALID_PAYLOAD)
+    }
     const user = await this.userService.getById(postDto.authorId)
     const post = Post.new(postDto.title, postDto.content, user, postDto.image)
     return this.postRepository.create(post)

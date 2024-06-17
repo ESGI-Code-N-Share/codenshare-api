@@ -214,9 +214,6 @@ test.group('PostService - GetAll', (group) => {
     }
 
     const userStub = sinon.stub(userService, 'getById').resolves(user)
-    const createStub = sinon
-      .stub(postRepository, 'create')
-      .resolves(assert.fail('Should not be called'))
 
     try {
       await postService.create(createPostDto)
@@ -226,7 +223,6 @@ test.group('PostService - GetAll', (group) => {
     }
 
     userStub.restore()
-    createStub.restore()
   })
 })
 

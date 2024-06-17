@@ -101,7 +101,7 @@ test.group('ConversationService - GetById', (group) => {
     const conversationId = '1'
     const getByIdStub = sinon
       .stub(conversationRepository, 'getById')
-      .throws(new ConversationException(ConversationMessageException.CONVERSATION_NOT_FOUND))
+      .rejects(new ConversationException(ConversationMessageException.CONVERSATION_NOT_FOUND))
 
     try {
       await conversationService.getById(conversationId)
@@ -276,7 +276,7 @@ test.group('ConversationService - Leave', (group) => {
     const userId = '1'
     const getByIdStub = sinon
       .stub(conversationRepository, 'getById')
-      .throws(new ConversationException(ConversationMessageException.CONVERSATION_NOT_FOUND))
+      .rejects(new ConversationException(ConversationMessageException.CONVERSATION_NOT_FOUND))
 
     try {
       await conversationService.leave({ conversationId, userId })
