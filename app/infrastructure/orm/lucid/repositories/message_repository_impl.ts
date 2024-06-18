@@ -1,5 +1,5 @@
 import MessageEntity from '#infrastructure/orm/lucid/entities/message_entity'
-import Message from '#domains/users/conversations/messages/message_model'
+import { Message } from '#domains/users/conversations/messages/message_model'
 import { type ConversationId } from '#domains/users/conversations/conversation_model'
 import { MessageRepositoryPort } from '#domains/users/conversations/messages/message_repository'
 

@@ -6,7 +6,6 @@ import {
   deleteConversationValidator,
 } from '#presentation/rest/adonis/controllers/conversation_validator'
 import {
-  ByUserDto,
   CreateConversationDto,
   DeleteConversationDto,
 } from '#domains/users/conversations/conversation_dto'
@@ -21,10 +20,7 @@ export default class ConversationController {
   async getByUser({ response, params }: HttpContext) {
     try {
       const validByUser = await byUserValidator.validate(params)
-      const byUserDto: ByUserDto = {
-        userId: validByUser.userId,
-      }
-      const conversations = await this.conversationService.getByUser(byUserDto)
+      const conversations = await this.conversationService.getByUser(validByUser.userId)
       return response.status(200).json({ data: conversations })
     } catch (e) {
       console.error(e)

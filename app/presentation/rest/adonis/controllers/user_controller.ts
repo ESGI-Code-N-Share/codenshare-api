@@ -2,7 +2,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
 import { UserService } from '#domains/users/user_service'
 import { SearchUserDto } from '#domains/users/user_dto'
-import { searchUserValidator } from '#presentation/rest/adonis/controllers/user_validtor'
+import { searchUserValidator } from '#presentation/rest/adonis/controllers/user_validator'
 
 @inject()
 export default class UserController {
