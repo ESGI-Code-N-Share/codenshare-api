@@ -15,6 +15,7 @@
   ],
   "exclude": [
     "app/presentation/rest/adonis/controllers/*_validator.ts",
+    "app/presentation/rest/adonis/controllers/program/*_validator.ts",
     "app/domains/program/dto/**",
     "app/**/*_dto.ts",
     "app/**/*_repository.ts",
