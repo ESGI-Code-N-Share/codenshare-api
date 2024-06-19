@@ -91,7 +91,7 @@ test.group('UserService - Delete', (group) => {
 
   test('should throw UserException if user not exist', async ({ assert }) => {
     const userId = 'NOT_FOUND'
-    const deletedStub = sinon.stub(userRepository, 'delete').rejects(new Error())
+    const deletedStub = sinon.stub(userRepository, 'getById').rejects(new Error())
 
     try {
       await userService.delete(userId)
