@@ -34,19 +34,22 @@ export default class extends BaseSchema {
 
   protected async createDefaultAdmin() {
     this.defer(async (db) => {
-      await db.insertQuery().table(this.tableName).insert({
-        user_id: '11111111-1111-1111-1111-111111111111',
-        email: 'admin@cns.fr',
-        password: 'adminfiters',
-        firstname: 'Admin',
-        lastname: 'CNS',
-        avatar: 'https://secure.gravatar.com/avatar/1',
-        birthdate: '1980-01-01',
-        role: 'admin',
-        overview: 'Admin user',
-        created_at: new Date(),
-        updated_at: new Date(),
-      })
+      await db
+        .insertQuery()
+        .table(this.tableName)
+        .insert({
+          user_id: '11111111-1111-1111-1111-111111111111',
+          email: 'admin@cns.fr',
+          password: await Hash.make('adminfiters'),
+          firstname: 'Admin',
+          lastname: 'CNS',
+          avatar: 'https://secure.gravatar.com/avatar/1',
+          birthdate: '1980-01-01',
+          role: 'admin',
+          overview: 'Admin user',
+          created_at: new Date(),
+          updated_at: new Date(),
+        })
     })
   }
 
