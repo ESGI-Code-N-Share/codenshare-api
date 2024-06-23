@@ -8,9 +8,8 @@
 */
 
 import router from '@adonisjs/core/services/router'
-import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
-
-// const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
+import { middleware } from '#start/kernel'
+const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
 const UserController = () => import('#presentation/rest/adonis/controllers/user_controller')
 const PostController = () => import('#presentation/rest/adonis/controllers/post_controller')
 const FriendController = () => import('#presentation/rest/adonis/controllers/friend_controller')
@@ -21,19 +20,6 @@ const ConversationController = () =>
   import('#presentation/rest/adonis/controllers/conversation_controller')
 const PostLikeController = () =>
   import('#presentation/rest/adonis/controllers/post_like_controller')
-
-const authRouter = () => {
-  router.post('/login', async ({ request, response }) => {
-    try {
-      const { email } = request.all()
-      const userRepo = new UserRepositoryImpl()
-      const users = await userRepo.searchByEmail(email)
-      response.send({ data: users[0] })
-    } catch (e) {
-      console.error(e)
-    }
-  })
-}
 
 const messageRouter = () => {
   router
@@ -66,10 +52,12 @@ const programRouter = () => {
   router.get('/programs/search', [ProgramController, 'search'])
   router.get('/programs', [ProgramController, 'list'])
   router.get('/programs/:programId', [ProgramController, 'find'])
-  router.post('/programs', [ProgramController, 'create'])
-  router.delete('/programs/:programId', [ProgramController, 'delete'])
+  router.post('/programs', [ProgramController, 'create']).use([middleware.auth()])
+  router
+    .delete('/programs/:programId', [ProgramController, 'delete'])
+    .use([middleware.auth(), middleware.admin()])
   router.patch('/programs/:programId', [ProgramController, 'update'])
-  router.post('/programs/:programId/import', [ProgramController, 'import'])
+  router.post('/programs/:programId/import', [ProgramController, 'import']).use([middleware.auth()])
   router.post('/programs/:programId/run', [ProgramController, 'run'])
 }
 
@@ -94,6 +82,12 @@ const friendRouter = () => {
   router.get('/friends/following', [FriendController, 'getFollowingByUser'])
   router.post('/friends', [FriendController, 'create'])
   router.delete('/friends', [FriendController, 'delete'])
+}
+
+const authRouter = () => {
+  router.post('/login', [AuthController, 'login']).use(middleware.guest())
+  router.post('/register', [AuthController, 'register']).use(middleware.guest())
+  router.post('/logout/', [AuthController, 'logout'])
 }
 
 router

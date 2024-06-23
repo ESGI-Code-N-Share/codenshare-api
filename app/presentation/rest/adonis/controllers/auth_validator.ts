@@ -4,6 +4,7 @@ export const loginAuthValidator = vine.compile(
   vine.object({
     email: vine.string().email(),
     password: vine.string().minLength(6),
+    stayLogin: vine.boolean(),
   })
 )
 

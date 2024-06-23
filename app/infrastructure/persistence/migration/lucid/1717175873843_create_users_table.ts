@@ -1,4 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
+import Hash from '@adonisjs/core/services/hash'
 
 export default class extends BaseSchema {
   protected tableName = 'users'
@@ -33,37 +34,43 @@ export default class extends BaseSchema {
 
   protected async createDefaultAdmin() {
     this.defer(async (db) => {
-      await db.insertQuery().table(this.tableName).insert({
-        user_id: '11111111-1111-1111-1111-111111111111',
-        email: 'admin@cns.fr',
-        password: 'adminfiters',
-        firstname: 'Admin',
-        lastname: 'CNS',
-        avatar: 'https://secure.gravatar.com/avatar/1',
-        birthdate: '1980-01-01',
-        role: 'admin',
-        overview: 'Admin user',
-        created_at: new Date(),
-        updated_at: new Date(),
-      })
+      await db
+        .insertQuery()
+        .table(this.tableName)
+        .insert({
+          user_id: '11111111-1111-1111-1111-111111111111',
+          email: 'admin@cns.fr',
+          password: await Hash.make('adminfiters'),
+          firstname: 'Admin',
+          lastname: 'CNS',
+          avatar: 'https://secure.gravatar.com/avatar/1',
+          birthdate: '1980-01-01',
+          role: 'admin',
+          overview: 'Admin user',
+          created_at: new Date(),
+          updated_at: new Date(),
+        })
     })
   }
 
   protected async createDefaultUser() {
     this.defer(async (db) => {
-      await db.insertQuery().table(this.tableName).insert({
-        user_id: '22222222-2222-2222-2222-222222222222',
-        email: 'c.lechene@gmail.com',
-        password: 'adminfiters',
-        firstname: 'Corentin',
-        lastname: 'Lechene',
-        avatar: 'https://randomuser.me/api/portraits/men/9.jpg',
-        birthdate: '1990-01-01',
-        role: 'user',
-        overview: 'Lead developer at CNS',
-        created_at: new Date(),
-        updated_at: new Date(),
-      })
+      await db
+        .insertQuery()
+        .table(this.tableName)
+        .insert({
+          user_id: '22222222-2222-2222-2222-222222222222',
+          email: 'c.lechene@gmail.com',
+          password: await Hash.make('adminfiters'),
+          firstname: 'Corentin',
+          lastname: 'Lechene',
+          avatar: 'https://randomuser.me/api/portraits/men/9.jpg',
+          birthdate: '1990-01-01',
+          role: 'user',
+          overview: 'Lead developer at CNS',
+          created_at: new Date(),
+          updated_at: new Date(),
+        })
     })
   }
 }
