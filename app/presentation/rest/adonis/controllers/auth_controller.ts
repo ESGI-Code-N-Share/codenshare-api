@@ -20,8 +20,13 @@ export default class AuthController {
         email: validData.email,
         password: validData.password,
       }
-      const user = await this.authService.login(loginAuthDto)
-      return response.status(200).json({ data: user })
+
+      const stayLogin = validData.stayLogin ?? false
+      const user = await this.authService.login(loginAuthDto, stayLogin)
+
+      return response.status(200).json({
+        data: user,
+      })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -31,6 +36,7 @@ export default class AuthController {
   async register({ request, response }: HttpContext) {
     try {
       const validData = await registerAuthValidator.validate(request.body())
+      console.log('Validated registration data:', validData)
       const registerAuthDto: RegisterAuthDto = {
         firstname: validData.firstname,
         lastname: validData.lastname,
@@ -39,7 +45,19 @@ export default class AuthController {
         birthdate: new Date(validData.birthdate),
       }
       const userId = await this.authService.register(registerAuthDto)
+      console.log('User registration successful, userId:', userId)
       return response.status(201).json({ data: userId })
+    } catch (e) {
+      console.error('Registration error:', e)
+      return response.status(400).send({ message: e.message })
+    }
+  }
+
+  async logout({ request, response }: HttpContext) {
+    try {
+      const userId = request.input('userId')
+      await this.authService.logout(userId)
+      return response.status(200).json({ message: 'Logout successful' })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

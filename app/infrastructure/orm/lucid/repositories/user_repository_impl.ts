@@ -1,8 +1,7 @@
 import { type UserRepositoryPort } from '#domains/users/user_repository'
 import UserEntity from '../entities/user_entity.js'
 import { User, type UserId } from '#domains/users/user_model'
-import { CreateUserDto } from '#domains/users/user_dto'
-import { randomUUID } from 'node:crypto'
+import { DateTime } from 'luxon'
 
 export class UserRepositoryImpl implements UserRepositoryPort {
   async searchByEmail(query: string): Promise<User[]> {
@@ -40,17 +39,34 @@ export class UserRepositoryImpl implements UserRepositoryPort {
     return user ? user.toDomain() : null
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const defaultPictureName = `https://picsum.photos/536/${Math.floor(Math.random() * 536)}`
-    const user = await UserEntity.create({
-      userId: randomUUID(),
-      email: createUserDto.email,
-      password: createUserDto.password,
-      firstname: createUserDto.firstname,
-      lastname: createUserDto.lastname,
-      birthdate: createUserDto.birthdate,
-      avatar: createUserDto.avatar || defaultPictureName,
+  async create(user: User): Promise<User> {
+    const userEntity = await UserEntity.create({
+      userId: user.userId,
+      email: user.email,
+      password: user.password,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      birthdate: user.birthdate,
+      avatar: user.avatar,
     })
-    return user.toDomain()
+    return userEntity.toDomain()
+  }
+
+  async update(user: User): Promise<User> {
+    const userEntity = await UserEntity.findOrFail(user.userId)
+
+    userEntity.email = user.email
+    userEntity.password = user.password
+    userEntity.firstname = user.firstname
+    userEntity.lastname = user.lastname
+    userEntity.birthdate = user.birthdate
+    userEntity.avatar = user.avatar
+    userEntity.overview = user.overview
+    userEntity.role = user.role
+    userEntity.token = user.token
+    userEntity.updatedAt = DateTime.now()
+
+    await userEntity.save()
+    return userEntity.toDomain()
   }
 }

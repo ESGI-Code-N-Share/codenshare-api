@@ -12,5 +12,7 @@ export interface UserRepositoryPort {
 
   getByEmail(email: string): Promise<User | null>
 
-  create(createUserDto: CreateUserDto): Promise<User>
+  create(createUserDto: CreateUserDto): Promise<CreateUserDto>
+
+  update(user: User): Promise<User>
 }

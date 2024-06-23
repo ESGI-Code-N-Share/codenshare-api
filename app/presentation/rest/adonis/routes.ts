@@ -8,6 +8,7 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
 // import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
 const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
 const UserController = () => import('#presentation/rest/adonis/controllers/user_controller')
@@ -63,10 +64,12 @@ const programRouter = () => {
   router.get('/programs/search', [ProgramController, 'search'])
   router.get('/programs', [ProgramController, 'list'])
   router.get('/programs/:programId', [ProgramController, 'find'])
-  router.post('/programs', [ProgramController, 'create'])
-  router.delete('/programs/:programId', [ProgramController, 'delete'])
+  router.post('/programs', [ProgramController, 'create']).use([middleware.auth()])
+  router
+    .delete('/programs/:programId', [ProgramController, 'delete'])
+    .use([middleware.auth(), middleware.admin()])
   router.patch('/programs/:programId', [ProgramController, 'update'])
-  router.post('/programs/:programId/import', [ProgramController, 'import'])
+  router.post('/programs/:programId/import', [ProgramController, 'import']).use([middleware.auth()])
 }
 
 const postRouter = () => {
@@ -83,8 +86,9 @@ const friendRouter = () => {
 }
 
 const authRouter = () => {
-  router.post('/login', [AuthController, 'login'])
-  router.post('/register', [AuthController, 'register'])
+  router.post('/login', [AuthController, 'login']).use(middleware.guest())
+  router.post('/register', [AuthController, 'register']).use(middleware.guest())
+  router.post('/logout/', [AuthController, 'logout'])
 }
 
 router

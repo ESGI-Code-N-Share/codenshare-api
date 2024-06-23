@@ -2,7 +2,7 @@ import { User, UserId } from '#domains/users/user_model'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
 import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
 import { inject } from '@adonisjs/core'
-import { CreateUserDto, SearchUserDto } from '#domains/users/user_dto'
+import { SearchUserDto } from '#domains/users/user_dto'
 
 @inject()
 export class UserService {
@@ -39,12 +39,21 @@ export class UserService {
     }
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(user: User): Promise<User> {
     try {
-      return await this.userRepository.create(createUserDto)
+      return await this.userRepository.create(user)
     } catch (error) {
-      console.error('Registration Error:', error)
+      console.error('Error saving user to database:', error)
       throw new UserException(UserMessageException.USER_CREATION_FAILED)
+    }
+  }
+
+  async update(user: User): Promise<User> {
+    try {
+      return await this.userRepository.update(user)
+    } catch (error) {
+      console.error('Update Error:', error)
+      throw new UserException(UserMessageException.USER_UPDATE_FAILED)
     }
   }
 }
