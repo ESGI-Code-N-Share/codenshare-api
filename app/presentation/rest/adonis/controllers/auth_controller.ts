@@ -36,7 +36,6 @@ export default class AuthController {
   async register({ request, response }: HttpContext) {
     try {
       const validData = await registerAuthValidator.validate(request.body())
-      console.log('Validated registration data:', validData)
       const registerAuthDto: RegisterAuthDto = {
         firstname: validData.firstname,
         lastname: validData.lastname,
@@ -45,7 +44,6 @@ export default class AuthController {
         birthdate: new Date(validData.birthdate),
       }
       const userId = await this.authService.register(registerAuthDto)
-      console.log('User registration successful, userId:', userId)
       return response.status(201).json({ data: userId })
     } catch (e) {
       console.error('Registration error:', e)
