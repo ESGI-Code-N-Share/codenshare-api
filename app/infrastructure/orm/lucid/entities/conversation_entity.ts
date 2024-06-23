@@ -49,7 +49,7 @@ export default class ConversationEntity extends BaseModel {
       owner: this.owner.toDomain(),
       members: this.participants.map((participant) => participant.toDomain()),
       messages: this.messages.map((message) => message.toDomain()),
-      createdAt: this.createdAt.toJSDate(),
+      createdAt: this.createdAt?.toJSDate(),
     })
   }
 }

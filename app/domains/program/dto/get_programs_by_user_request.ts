@@ -3,5 +3,6 @@ export interface GetProgramsRequest {
   name: string
   description: string
   imageURL: string
+  authorId: string
   visibility: string
 }

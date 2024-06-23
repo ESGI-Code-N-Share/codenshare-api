@@ -41,7 +41,7 @@ export default class ProgramController {
     try {
       const validQuery = await searchProgramsValidator.validate(request.qs())
       const programs = await this.programService.search(validQuery.query)
-      return response.status(200).json(programs)
+      return response.status(200).json({ data: programs })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -95,12 +95,25 @@ export default class ProgramController {
         validProgram.name,
         validProgram.description,
         validProgram.pictureURL,
-        validProgram.code,
+        validProgram.code || '',
         validProgram.language,
         validProgram.visibility as ProgramVisibility,
         validProgram.authorId
       )
-      return response.status(200)
+      return response.status(200).send({ data: params.programId })
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({ message: e.message })
+    }
+  }
+
+  async run({ request, response, params }: HttpContext) {
+    try {
+      const data = request.all()
+      const info = await programsValidator.validate(data)
+
+      const result = await this.programService.execute(params.programId, info.userId)
+      return response.status(200).send({ data: result })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

@@ -13,7 +13,7 @@ export default class MessageController {
   async getByConversation({ params, response }: HttpContext) {
     try {
       const messages = await this.messageService.getByConversation(params.conversationId)
-      return response.status(200).json(messages)
+      return response.status(200).json({ data: messages })
     } catch (e) {
       console.error(e)
       return response.status(500)
@@ -30,7 +30,7 @@ export default class MessageController {
         content: validSend.content,
       }
       const message = await this.messageService.send(sendMessageDto)
-      return response.status(201).json(message)
+      return response.status(201).json({ data: message })
     } catch (e) {
       console.error(e)
       return response.status(500)

@@ -7,17 +7,21 @@ import { ProgramException, ProgramMessageException } from '#domains/program/prog
 import { ProgramServicePort } from '#domains/program/program_service_port'
 import { GetProgramsRequest } from '#domains/program/dto/get_programs_by_user_request'
 import { GetProgramRequest } from '#domains/program/dto/get_program_request'
+import { EdcService } from '#infrastructure/api/edc_service'
+import { CodeHistoryService } from "#domains/program/codeHistory/code_history_service";
 
 @inject()
 export class ProgramService implements ProgramServicePort {
   constructor(
     private readonly programRepository: ProgramRepositoryImpl,
-    // private readonly codeHistoryService: CodeHistoryService,
-    private readonly userService: UserService
+    private readonly codeHistoryService: CodeHistoryService,
+    private readonly userService: UserService,
+    private readonly edcService: EdcService
   ) {
     this.programRepository = programRepository
-    // this.codeHistoryService = codeHistoryService
+    this.codeHistoryService = codeHistoryService
     this.userService = userService
+    this.edcService = edcService
   }
 
   async getProgram(id: ProgramId): Promise<GetProgramRequest> {
@@ -36,8 +40,12 @@ export class ProgramService implements ProgramServicePort {
     const programsByName = await this.programRepository.getProgramsByName(content)
     const programsByDescription = await this.programRepository.getProgramsByDescription(content)
 
-    const uniquePrograms = new Set([...programsByName, ...programsByDescription])
-    return Array.from(uniquePrograms).map((program) => program.toGetProgramsRequest())
+    const uniqueProgramsMap = new Map<string, Program>()
+
+    programsByName.forEach((program) => uniqueProgramsMap.set(program.programId, program))
+    programsByDescription.forEach((program) => uniqueProgramsMap.set(program.programId, program))
+
+    return Array.from(uniqueProgramsMap.values()).map((program) => program.toGetProgramsRequest())
   }
 
   async createDefault(userId: UserId): Promise<ProgramId> {
@@ -120,9 +128,16 @@ export class ProgramService implements ProgramServicePort {
     await this.programRepository.create(programImported.toEntity())
   }
 
-  // execute(programId: ProgramId/*, userId: UserId*/): Promise<void> {
-  // await this.codeHistoryService.create(program)
-  // }
+  async execute(programId: ProgramId, userId: UserId): Promise<string> {
+    const program = await this.programRepository.getById(programId)
+
+    if (program.programVisibility === 'private' && program.originalAuthor.userId !== userId) {
+      throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
+    }
+
+    await this.codeHistoryService.create(program)
+    return await this.edcService.executeCode(programId, program.code, program.language, 11)
+  }
 
   private async getById(id: ProgramId): Promise<Program> {
     try {

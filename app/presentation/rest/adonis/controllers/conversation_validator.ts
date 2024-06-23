@@ -15,7 +15,7 @@ export const createConversationValidator = vine.compile(
 
 export const deleteConversationValidator = vine.compile(
   vine.object({
-    memberId: vine.string().uuid(),
+    userId: vine.string().uuid(),
     conversationId: vine.string().uuid(),
   })
 )

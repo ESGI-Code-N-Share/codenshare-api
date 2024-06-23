@@ -1,14 +1,17 @@
 {
   "name": "codenshare-api",
-  "version": "0.0.0",
+  "version": "1.5.1",
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node bin/server.js",
-    "build": "node ace build",
+    "start": "ENV_PATH=../ node bin/server.js",
+    "build": "node ace build --no-assets",
     "dev": "node ace serve --watch",
     "test": "node ace test",
+    "test:watch": "node ace test --watch",
+    "coverage": "c8 npm test && c8 report",
+    "migration": "node ace migration:run",
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit"
@@ -47,11 +50,14 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20.12.7",
+    "@types/sinon": "^17.0.3",
+    "c8": "^10.1.2",
     "eslint": "^8.57.0",
     "hot-hook": "^0.2.1",
     "jsonwebtoken": "^9.0.2",
     "pino-pretty": "^11.0.0",
     "prettier": "^3.2.5",
+    "sinon": "^18.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
@@ -61,6 +67,7 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^20.5.1",
     "@vinejs/vine": "^2.0.0",
+    "axios": "^1.7.2",
     "luxon": "^3.4.4",
     "pg": "^8.11.5",
     "reflect-metadata": "^0.2.2"

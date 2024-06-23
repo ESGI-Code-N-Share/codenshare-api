@@ -10,13 +10,18 @@ export default class PostController {
     this.postService = postService
   }
 
-  async list({ response }: HttpContext) {
+  async list({ response, request }: HttpContext) {
     try {
+      const queries = request.qs()
+      if (queries.userId) {
+        const posts = await this.postService.getByUser(queries.userId)
+        return response.json({ data: posts })
+      }
       const posts = await this.postService.getAll()
       return response.json({ data: posts })
     } catch (e) {
       console.error(e)
-      return response.status(500).send({ message: e.message || e.code })
+      return response.badGateway({ message: e.message })
     }
   }
 
@@ -34,17 +39,17 @@ export default class PostController {
       return response.status(201).json({ data: { postId: post.postId } })
     } catch (e) {
       console.error(e)
-      return response.status(400).send({ message: e.message || e.code })
+      return response.badGateway({ message: e.message })
     }
   }
 
   async delete({ params, response }: HttpContext) {
     try {
       const postId = await this.postService.delete(params.postId)
-      return response.status(200).send({ data: postId })
+      return response.status(200).json({ data: postId })
     } catch (e) {
       console.error(e)
-      return response.status(404).send({ message: e.message || e.code })
+      return response.status(404).json({ message: e.message })
     }
   }
 }

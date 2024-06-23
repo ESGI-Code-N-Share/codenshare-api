@@ -6,7 +6,6 @@ import {
   deleteConversationValidator,
 } from '#presentation/rest/adonis/controllers/conversation_validator'
 import {
-  ByUserDto,
   CreateConversationDto,
   DeleteConversationDto,
 } from '#domains/users/conversations/conversation_dto'
@@ -21,11 +20,8 @@ export default class ConversationController {
   async getByUser({ response, params }: HttpContext) {
     try {
       const validByUser = await byUserValidator.validate(params)
-      const byUserDto: ByUserDto = {
-        userId: validByUser.userId,
-      }
-      const conversations = await this.conversationService.getByUser(byUserDto)
-      return response.status(200).json(conversations)
+      const conversations = await this.conversationService.getByUser(validByUser.userId)
+      return response.status(200).json({ data: conversations })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -41,7 +37,7 @@ export default class ConversationController {
         memberIds: validCreate.memberIds,
       }
       const conversation = await this.conversationService.create(createDto)
-      return response.status(201).json(conversation)
+      return response.status(201).json({ data: conversation })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
@@ -52,11 +48,11 @@ export default class ConversationController {
     try {
       const validDelete = await deleteConversationValidator.validate(params)
       const deleteConversationDto: DeleteConversationDto = {
-        userId: validDelete.memberId,
+        userId: validDelete.userId,
         conversationId: validDelete.conversationId,
       }
       const conversationId = await this.conversationService.leave(deleteConversationDto)
-      return response.status(200).json(conversationId)
+      return response.status(200).json({ data: conversationId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

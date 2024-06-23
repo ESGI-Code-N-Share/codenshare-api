@@ -1,0 +1,29 @@
+{
+  "reporter": [
+    "html",
+    "text"
+  ],
+  "all": true,
+  "check-coverage": true,
+  "report-dir": "./coverage",
+  "include": [
+    "app/domains/**",
+    "app/infrastructure/orm/**",
+    "app/infrastructure/emails/**",
+    "app/infrastructure/notifications/**",
+    "app/presentation/rest/adonis/controllers/**"
+  ],
+  "exclude": [
+    "app/presentation/rest/adonis/controllers/*_validator.ts",
+    "app/presentation/rest/adonis/controllers/program/*_validator.ts",
+    "app/domains/program/dto/**",
+    "app/**/*_dto.ts",
+    "app/**/*_repository.ts",
+    "node_modules/**",
+    "tests/**",
+    "build/**",
+    "config/**",
+    "providers/**",
+    "start/**"
+  ]
+}
