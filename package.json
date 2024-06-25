@@ -1,6 +1,6 @@
 {
   "name": "codenshare-api",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
@@ -67,6 +67,7 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^20.5.1",
     "@vinejs/vine": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
     "axios": "^1.7.2",
     "luxon": "^3.4.4",
     "pg": "^8.11.5",
