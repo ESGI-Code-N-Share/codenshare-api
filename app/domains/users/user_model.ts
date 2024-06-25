@@ -13,12 +13,12 @@ export class User {
   avatar: string
   role: UserRole
   overview?: string
-  token?: string
+  token?: string | null
   password: string
 
   createdAt: Date
 
-  private constructor(
+  constructor(
     userId: UserId,
     firstname: string,
     lastname: string,
@@ -28,8 +28,8 @@ export class User {
     role: UserRole,
     password: string,
     createdAt: Date = new Date(),
-    token?: string,
-    overview?: string
+    token?: string | null | undefined,
+    overview?: string | undefined
   ) {
     this.userId = userId
     this.firstname = firstname
@@ -57,17 +57,17 @@ export class User {
   }
 
   static fromPersistence(data: {
-    userId: UserId
-    firstname: string
-    lastname: string
-    email: string
-    birthdate: Date
-    avatar: string
-    role: UserRole
-    password: string
+    overview: string | undefined
     createdAt: Date
-    token?: string
-    overview?: string
+    firstname: string
+    password: string
+    birthdate: Date
+    role: 'admin' | 'moderator' | 'user'
+    avatar: string
+    userId: string
+    email: string
+    lastname: string
+    token: string | null | undefined
   }) {
     return new User(
       data.userId,

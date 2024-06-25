@@ -23,7 +23,7 @@ export class AuthService {
       throw new AuthException(AuthMessageException.USER_WITH_CREDENTIALS_NOT_FOUND)
     }
 
-    const tokenDuration = stayLogin ? '7d' : '15m'
+    const tokenDuration = stayLogin ? '7d' : '15s'
     user.token = JwtUtil.generateToken({ id: user.userId, email: user.email }, tokenDuration)
     await this.userService.update(user)
     return user
@@ -61,7 +61,7 @@ export class AuthService {
       throw new UserException(UserMessageException.USER_NOT_FOUND)
     }
 
-    user.token = ''
+    user.token = null
     await this.userService.update(user)
   }
 }
