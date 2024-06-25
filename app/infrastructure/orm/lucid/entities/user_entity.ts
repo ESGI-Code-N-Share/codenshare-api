@@ -30,7 +30,7 @@ export default class UserEntity extends BaseModel {
   declare role: UserRole
 
   @column()
-  declare token?: string
+  declare token?: string | null | undefined
 
   @column()
   declare password: string

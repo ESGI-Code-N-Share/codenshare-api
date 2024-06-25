@@ -13,4 +13,8 @@ export default class JwtUtil {
   static generateToken(data: TokenData, expiresIn: string = this.expirationTime): string {
     return jwt.sign(data, this.secret, { expiresIn })
   }
+
+  static decodeToken(token: string): TokenData {
+    return jwt.verify(token, this.secret) as TokenData
+  }
 }
