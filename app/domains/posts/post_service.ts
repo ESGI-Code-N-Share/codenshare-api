@@ -5,6 +5,7 @@ import { PostRepositoryImpl } from '#infrastructure/orm/lucid/repositories/post_
 import { UserService } from '#domains/users/user_service'
 import { inject } from '@adonisjs/core'
 import { UserId } from '#domains/users/user_model'
+import { ProgramException, ProgramMessageException } from '#domains/program/program_exceptions'
 
 @inject()
 export class PostService {
@@ -40,8 +41,18 @@ export class PostService {
     return this.postRepository.create(post)
   }
 
-  async delete(postId: PostId): Promise<PostId> {
+  async isPostAuthor(postId: PostId, userId: UserId): Promise<boolean> {
+    const program = await this.postRepository.getById(postId)
+    const user = await this.userService.getById(userId)
+    return program.author.userId === userId || user.role === 'admin'
+  }
+
+  async delete(postId: PostId, userId: UserId): Promise<PostId> {
     const post = await this.getById(postId)
+    const isAuthor = await this.isPostAuthor(postId, userId)
+    if (isAuthor) {
+      throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
+    }
     return this.postRepository.delete(post.postId)
   }
 }

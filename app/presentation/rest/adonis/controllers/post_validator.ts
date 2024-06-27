@@ -8,3 +8,9 @@ export const createPostValidator = vine.compile(
     image: vine.string().optional(),
   })
 )
+
+export const postValidator = vine.compile(
+  vine.object({
+    userId: vine.string().trim().minLength(1),
+  })
+)
