@@ -8,7 +8,7 @@ import { ProgramServicePort } from '#domains/program/program_service_port'
 import { GetProgramsRequest } from '#domains/program/dto/get_programs_by_user_request'
 import { GetProgramRequest } from '#domains/program/dto/get_program_request'
 import { EdcService } from '#infrastructure/api/edc_service'
-import { CodeHistoryService } from "#domains/program/codeHistory/code_history_service";
+import { CodeHistoryService } from '#domains/program/codeHistory/code_history_service'
 
 @inject()
 export class ProgramService implements ProgramServicePort {
@@ -96,19 +96,32 @@ export class ProgramService implements ProgramServicePort {
   }
 
   async delete(id: ProgramId, userId: UserId): Promise<ProgramId> {
+    const isAuthor = await this.isProgramAuthor(id, userId)
     const user = await this.userService.getById(userId)
-    const program = await this.getById(id)
-
-    if (program.originalAuthor.userId !== userId && user.role !== 'admin') {
-      throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
+    if (!isAuthor) {
+      if (user.role !== 'admin') {
+        throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
+      }
     }
 
     return await this.programRepository.delete(id)
   }
 
+  async isProgramAuthor(programId: ProgramId, userId: UserId): Promise<boolean> {
+    const program = await this.programRepository.getById(programId)
+    return program.originalAuthor.userId === userId
+  }
+
   async import(id: ProgramId, userId: UserId): Promise<void> {
     const user = await this.userService.getById(userId)
     const program = await this.getById(id)
+
+    const isAuthor = await this.isProgramAuthor(id, userId)
+    if (isAuthor) {
+      if (user.role !== 'admin') {
+        throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
+      }
+    }
 
     if (program.programVisibility === 'private') {
       throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
