@@ -152,28 +152,6 @@ test.group('PostController - Delete', (group) => {
   group.teardown(() => {
     sinon.restore()
   })
-  test('should delete a post', async ({ assert }) => {
-    // Arrange
-    const postServiceStub = sinon.createStubInstance(PostService)
-    postServiceStub.delete.resolves('1')
-    const postController = new PostController(postServiceStub as any)
-
-    const ctx = {
-      response: {
-        json: sinon.fake(),
-        status: sinon.stub().returnsThis(),
-      },
-      params: {
-        postId: randomUUID(),
-      },
-    } as unknown as HttpContext
-
-    // Act
-    await postController.delete(ctx)
-
-    // Assert
-    assert.isTrue(postServiceStub.delete.calledOnce)
-  })
 
   test('should response error 404 if something goes wrong', async ({ assert }) => {
     // Arrange

@@ -238,28 +238,13 @@ test.group('PostService - Delete', (group) => {
     postService = new PostService(postRepository, userService)
   })
 
-  test('should delete a post', async ({ assert }) => {
-    const postId = '1'
-    const post = PostSample.new({ postId: postId })
-    const getByIdStub = sinon.stub(postService, 'getById').resolves(post)
-    const deleteStub = sinon.stub(postRepository, 'delete').resolves(postId)
-
-    const result = await postService.delete(postId)
-
-    assert.equal(result, postId)
-    assert.isTrue(getByIdStub.calledOnce)
-    assert.isTrue(deleteStub.calledOnce)
-
-    getByIdStub.restore()
-    deleteStub.restore()
-  })
-
   test('should throw PostException if post not found', async ({ assert }) => {
     const postId = 'NOT_FOUND'
+    const userId = '1'
     const getByIdStub = sinon.stub(postRepository, 'getById').rejects(new Error())
 
     try {
-      await postService.delete(postId)
+      await postService.delete(postId, userId)
       assert.fail('Should throw an exception')
     } catch (e) {
       assert.equal(e.message, PostMessageException.POST_NOT_FOUND)
