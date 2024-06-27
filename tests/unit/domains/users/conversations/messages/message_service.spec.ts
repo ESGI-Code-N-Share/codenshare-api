@@ -12,7 +12,7 @@ import {
   ConversationException,
   ConversationMessageException,
 } from '#domains/users/conversations/conversation_exception'
-import {Conversation} from "#domains/users/conversations/conversation_model";
+import { Conversation } from '#domains/users/conversations/conversation_model'
 
 test.group('MessageService - GetByConversation', (group) => {
   let messageService: MessageService
