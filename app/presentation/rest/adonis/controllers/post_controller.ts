@@ -1,7 +1,10 @@
 import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
 import { PostService } from '#domains/posts/post_service'
-import { createPostValidator } from '#presentation/rest/adonis/controllers/post_validator'
+import {
+  createPostValidator,
+  postValidator,
+} from '#presentation/rest/adonis/controllers/post_validator'
 import { CreatePostDto } from '#domains/posts/post_dto'
 
 @inject()
@@ -43,9 +46,10 @@ export default class PostController {
     }
   }
 
-  async delete({ params, response }: HttpContext) {
+  async delete({ params, response, request }: HttpContext) {
     try {
-      const postId = await this.postService.delete(params.postId)
+      const validProgram = await postValidator.validate(request.all())
+      const postId = await this.postService.delete(params.postId, validProgram.userId)
       return response.status(200).json({ data: postId })
     } catch (e) {
       console.error(e)
