@@ -9,6 +9,7 @@ export interface RegisterAuthDto {
   email: string
   password: string
   birthdate: Date
+  emailVerified: boolean
 }
 
 export interface PasswordRecoveryAuthDto {

@@ -6,6 +6,7 @@ import { AuthException, AuthMessageException } from '#domains/auth/auth_exceptio
 import Hash from '@adonisjs/core/services/hash'
 import JwtUtil from '#config/jwt'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
+import { EmailService } from '#domains/auth/email_service'
 
 @inject()
 export class AuthService {
@@ -30,7 +31,14 @@ export class AuthService {
   }
 
   async register(registerAuthDto: RegisterAuthDto): Promise<UserId> {
-    const { email, password, firstname, lastname, birthdate } = registerAuthDto
+    const {
+      email,
+      password,
+      firstname,
+      lastname,
+      birthdate,
+      emailVerified = false,
+    } = registerAuthDto
     const existingUser = await this.userService.getByEmail(email)
     if (existingUser) {
       throw new AuthException(AuthMessageException.USER_WITH_EMAIL_ALREADY_EXISTS)
@@ -45,9 +53,11 @@ export class AuthService {
         email,
         birthdate,
         passwordHashed,
-        defaultPictureName
+        defaultPictureName,
+        emailVerified
       )
       const createdUser = await this.userService.create(newUser)
+      await EmailService.sendVerificationEmail(createdUser)
       return createdUser.userId
     } catch (error) {
       console.error('Registration Error:', error)
@@ -62,6 +72,20 @@ export class AuthService {
     }
 
     user.token = null
+    await this.userService.update(user)
+  }
+
+  async verifyEmail(userId: UserId): Promise<void> {
+    const user = await this.userService.getById(userId)
+    if (!user) {
+      throw new UserException(UserMessageException.USER_NOT_FOUND)
+    }
+
+    if (user.emailVerified) {
+      throw new UserException(UserMessageException.EMAIL_ALREADY_VERIFIED)
+    }
+
+    user.emailVerified = true
     await this.userService.update(user)
   }
 }

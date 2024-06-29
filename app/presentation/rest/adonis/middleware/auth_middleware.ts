@@ -5,6 +5,12 @@ export default class AuthMiddleware {
     try {
       if (!auth || !auth.user) {
         response.unauthorized({ message: 'User not authenticated' })
+        response.finish()
+      }
+
+      if (!auth.user.emailVerified) {
+        response.unauthorized({ message: 'Verify your email first' })
+        response.finish()
       }
     } catch (e) {
       console.error(e)

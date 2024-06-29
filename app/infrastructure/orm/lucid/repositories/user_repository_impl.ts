@@ -65,6 +65,7 @@ export class UserRepositoryImpl implements UserRepositoryPort {
     userEntity.role = user.role
     userEntity.token = user.token
     userEntity.updatedAt = DateTime.now()
+    userEntity.emailVerified = user.emailVerified
 
     await userEntity.save()
     return userEntity.toDomain()

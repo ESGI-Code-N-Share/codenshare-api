@@ -15,6 +15,7 @@ export const registerAuthValidator = vine.compile(
     email: vine.string().email(),
     password: vine.string().minLength(6),
     birthdate: vine.date({ formats: ['YYYY-MM-DD'] }),
+    emailVerified: vine.boolean().optional(),
   })
 )
 

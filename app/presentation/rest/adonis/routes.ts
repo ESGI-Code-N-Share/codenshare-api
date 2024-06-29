@@ -87,6 +87,7 @@ const authRouter = () => {
   router.post('/login', [AuthController, 'login'])
   router.post('/register', [AuthController, 'register'])
   router.post('/logout/', [AuthController, 'logout'])
+  router.get('/verify-email/:id', [AuthController, 'verifyEmail'])
 }
 
 router

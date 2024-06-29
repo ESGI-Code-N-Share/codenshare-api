@@ -6,6 +6,7 @@ import {
   registerAuthValidator,
 } from '#presentation/rest/adonis/controllers/auth_validator'
 import { LoginAuthDto, RegisterAuthDto } from '#domains/auth/auth_dto'
+import env from '#start/env'
 
 @inject()
 export default class AuthController {
@@ -36,12 +37,14 @@ export default class AuthController {
   async register({ request, response }: HttpContext) {
     try {
       const validData = await registerAuthValidator.validate(request.body())
+      const defaultEmailVerified = validData.emailVerified || false
       const registerAuthDto: RegisterAuthDto = {
         firstname: validData.firstname,
         lastname: validData.lastname,
         email: validData.email,
         password: validData.password,
         birthdate: new Date(validData.birthdate),
+        emailVerified: defaultEmailVerified,
       }
       const userId = await this.authService.register(registerAuthDto)
       return response.status(201).json({ data: userId })
@@ -56,6 +59,21 @@ export default class AuthController {
       const userId = request.input('userId')
       await this.authService.logout(userId)
       return response.status(200).json({ message: 'Logout successful' })
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({ message: e.message })
+    }
+  }
+
+  async verifyEmail({ params, response }: HttpContext) {
+    try {
+      const userId = params.id
+      if (!userId) {
+        return response.status(400).send({ message: 'Invalid user ID' })
+      }
+
+      await this.authService.verifyEmail(userId)
+      return response.redirect(`${env.get('FRONTEND_URL')}/email-verified`)
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })
