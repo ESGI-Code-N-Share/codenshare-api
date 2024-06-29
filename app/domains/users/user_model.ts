@@ -15,6 +15,7 @@ export class User {
   overview?: string
   token?: string | null
   password: string
+  emailVerified: boolean
 
   createdAt: Date
 
@@ -27,9 +28,10 @@ export class User {
     avatar: string,
     role: UserRole,
     password: string,
+    emailVerified: boolean,
     createdAt: Date = new Date(),
     token?: string | null | undefined,
-    overview?: string | undefined
+    overview?: string | undefined,
   ) {
     this.userId = userId
     this.firstname = firstname
@@ -42,6 +44,7 @@ export class User {
     this.token = token
     this.password = password
     this.createdAt = createdAt
+    this.emailVerified = emailVerified
   }
 
   static new(
@@ -51,9 +54,20 @@ export class User {
     birthdate: Date,
     password: string,
     avatar: string,
+    emailVerified: boolean,
     role: UserRole = 'user'
   ) {
-    return new User(randomUUID(), firstname, lastname, email, birthdate, avatar, role, password)
+    return new User(
+      randomUUID(),
+      firstname,
+      lastname,
+      email,
+      birthdate,
+      avatar,
+      role,
+      password,
+      emailVerified
+    )
   }
 
   static fromPersistence(data: {
@@ -68,6 +82,7 @@ export class User {
     email: string
     lastname: string
     token: string | null | undefined
+    emailVerified: boolean
   }) {
     return new User(
       data.userId,
@@ -78,6 +93,7 @@ export class User {
       data.avatar,
       data.role,
       data.password,
+      data.emailVerified,
       data.createdAt,
       data.token,
       data.overview

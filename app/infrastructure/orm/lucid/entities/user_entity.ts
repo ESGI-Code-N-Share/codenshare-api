@@ -35,6 +35,9 @@ export default class UserEntity extends BaseModel {
   @column()
   declare password: string
 
+  @column()
+  declare emailVerified: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -56,6 +59,7 @@ export default class UserEntity extends BaseModel {
       role: this.role,
       token: this.token,
       password: this.password,
+      emailVerified: this.emailVerified,
       createdAt: this.createdAt.toJSDate(),
     })
   }
