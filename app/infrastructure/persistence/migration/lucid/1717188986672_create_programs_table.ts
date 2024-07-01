@@ -15,6 +15,7 @@ export default class extends BaseSchema {
       table.text('code').nullable()
       table.uuid('author_id').references('user_id').inTable('users')
       table.uuid('original_author_id').references('user_id').inTable('users')
+      table.json('instructions').nullable()
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

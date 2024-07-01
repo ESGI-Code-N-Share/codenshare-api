@@ -24,6 +24,25 @@ export const updateProgramsValidator = vine.compile(
   })
 )
 
+export const updateInstructionsValidator = vine.compile(
+  vine.object({
+    instructions: vine.object({
+      inputs: vine.array(
+        vine.object({
+          name: vine.string().trim().minLength(1),
+          type: vine.string().trim().minLength(1),
+        })
+      ),
+      outputs: vine.array(
+        vine.object({
+          name: vine.string().trim().minLength(1),
+          type: vine.string().trim().minLength(1),
+        })
+      ),
+    }),
+  })
+)
+
 export const createProgramValidator = vine.compile(
   vine.object({
     authorId: vine.string().trim().minLength(1),

@@ -51,6 +51,7 @@ export class ProgramRepositoryImpl implements ProgramRepositoryPort {
     program.pictureName = programUpdated.pictureName
     program.author_id = programUpdated.author_id
     program.updatedAt = DateTime.now()
+    program.instructions = programUpdated.instructions
 
     await program.save()
   }

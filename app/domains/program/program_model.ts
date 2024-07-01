@@ -11,6 +11,12 @@ import { GetProgramsRequest } from '#domains/program/dto/get_programs_by_user_re
 export type ProgramId = string
 export type ProgramLanguages = 'c' | 'java' | 'javascript' | string
 export type ProgramVisibility = 'public' | 'protected' | 'private'
+export type ProgramInstructionsInput = { name: string; type: string }
+export type ProgramInstructionsOutput = { name: string; type: string }
+export type ProgramInstructions = {
+  inputs: ProgramInstructionsInput[]
+  outputs: ProgramInstructionsOutput[]
+}
 
 export class Program {
   programId: ProgramId
@@ -23,6 +29,7 @@ export class Program {
   author: User
   originalAuthor: User
   codeHistories: CodeHistory[]
+  instructions: ProgramInstructions
 
   constructor(
     id: ProgramId,
@@ -34,7 +41,8 @@ export class Program {
     programVisibility: ProgramVisibility,
     originalAuthor: User,
     author: User,
-    codeHistories: CodeHistory[]
+    codeHistories: CodeHistory[],
+    instructions: ProgramInstructions
   ) {
     this.programId = id
     this.name = name
@@ -46,6 +54,7 @@ export class Program {
     this.originalAuthor = originalAuthor
     this.author = author
     this.codeHistories = codeHistories
+    this.instructions = instructions
   }
 
   static new(
@@ -68,7 +77,8 @@ export class Program {
       programVisibility,
       originalAuthor,
       author,
-      []
+      [],
+      { inputs: [], outputs: [] }
     )
   }
 
@@ -88,7 +98,8 @@ export class Program {
       programVisibility,
       originalAuthor,
       author,
-      []
+      [],
+      { inputs: [], outputs: [] }
     )
   }
 
@@ -103,6 +114,7 @@ export class Program {
     originalAuthor: UserEntity
     author: UserEntity
     codeHistories: CodeHistoryEntity[]
+    instructions: ProgramInstructions
   }) {
     return new Program(
       data.programId,
@@ -114,7 +126,8 @@ export class Program {
       data.programVisibility,
       data.originalAuthor.toDomain(),
       data.author.toDomain(),
-      data.codeHistories.map((codeHistory) => codeHistory.toDomain())
+      data.codeHistories.map((codeHistory) => codeHistory.toDomain()),
+      data.instructions
     )
   }
 
@@ -130,6 +143,7 @@ export class Program {
     programEntity.pictureName = this.pictureName
     programEntity.author_id = this.author.userId
     programEntity.original_author_id = this.originalAuthor.userId
+    programEntity.instructions = this.instructions
 
     return programEntity
   }
@@ -159,6 +173,7 @@ export class Program {
       authorLastName: this.author.lastname,
       authorMail: this.author.email,
       codeHistories: this.codeHistories,
+      instructions: this.instructions,
     }
   }
 }
