@@ -5,6 +5,7 @@ import {
   createProgramValidator,
   programsValidator,
   searchProgramsValidator,
+  updateInstructionsValidator,
   updateProgramsValidator,
 } from '#presentation/rest/adonis/controllers/program/program_validator'
 import { ProgramVisibility } from '#domains/program/program_model'
@@ -12,7 +13,6 @@ import { ProgramVisibility } from '#domains/program/program_model'
 @inject()
 export default class ProgramController {
   constructor(private readonly programService: ProgramService) {
-    //todo: inject ProgramServicePort
     this.programService = programService
   }
 
@@ -67,6 +67,18 @@ export default class ProgramController {
 
       const programId = await this.programService.delete(params.programId, validProgram.userId)
       return response.status(200).send({ data: programId })
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({ message: e.message })
+    }
+  }
+
+  async updateInstructions({ request, response, params }: HttpContext) {
+    try {
+      const data = request.all()
+      const validProgram = await updateInstructionsValidator.validate(data)
+      await this.programService.updateInstructions(params.programId, validProgram.instructions)
+      return response.status(200).send({ data: params.programId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

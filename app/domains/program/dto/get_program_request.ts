@@ -13,5 +13,9 @@ export interface GetProgramRequest {
   authorName: string
   authorLastName: string
   authorMail: string
+  instructions: {
+    inputs: { name: string; type: string }[]
+    outputs: { name: string; type: string }[]
+  }
   codeHistories: CodeHistory[]
 }

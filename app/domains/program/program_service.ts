@@ -1,4 +1,9 @@
-import { Program, ProgramId, ProgramVisibility } from '#domains/program/program_model'
+import {
+  Program,
+  ProgramId,
+  ProgramInstructions,
+  ProgramVisibility,
+} from '#domains/program/program_model'
 import { UserService } from '#domains/users/user_service'
 import { inject } from '@adonisjs/core'
 import { User, UserId } from '#domains/users/user_model'
@@ -55,6 +60,13 @@ export class ProgramService implements ProgramServicePort {
     const newProgram = Program.default(defaultPictureName, 'private', user, user)
 
     return this.programRepository.create(newProgram.toEntity())
+  }
+
+  async updateInstructions(id: ProgramId, instructions: ProgramInstructions): Promise<void> {
+    const program = await this.getById(id)
+    program.instructions = instructions
+
+    await this.programRepository.update(program.toEntity())
   }
 
   async update(

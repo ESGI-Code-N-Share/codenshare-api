@@ -1,7 +1,12 @@
 import { DateTime } from 'luxon'
-import { Program, type ProgramId, type ProgramVisibility } from '#domains/program/program_model'
+import {
+  Program,
+  type ProgramId,
+  type ProgramInstructions,
+  type ProgramVisibility,
+} from '#domains/program/program_model'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
-import { column, BaseModel, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import UserEntity from './user_entity.js'
 import type { UserId } from '#domains/users/user_model'
 import CodeHistoryEntity from '#infrastructure/orm/lucid/entities/code_history_entity'
@@ -42,6 +47,9 @@ export default class ProgramEntity extends BaseModel {
   @column()
   declare author_id: UserId
 
+  @column()
+  declare instructions: ProgramInstructions
+
   @belongsTo(() => UserEntity, { foreignKey: 'author_id' })
   declare author: BelongsTo<typeof UserEntity>
 
@@ -55,6 +63,7 @@ export default class ProgramEntity extends BaseModel {
   declare deletedAt?: DateTime
 
   toDomain(): Program {
+    console.log(this.instructions)
     return Program.fromPersistence({
       programId: this.programId,
       name: this.name,
@@ -66,6 +75,7 @@ export default class ProgramEntity extends BaseModel {
       originalAuthor: this.originalAuthor,
       author: this.author,
       codeHistories: this.codeHistories,
+      instructions: this.instructions as ProgramInstructions,
     })
   }
 }

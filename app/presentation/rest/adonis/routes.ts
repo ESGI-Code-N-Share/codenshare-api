@@ -56,6 +56,7 @@ const programRouter = () => {
   router.post('/programs', [ProgramController, 'create'])
   router.delete('/programs/:programId', [ProgramController, 'delete'])
   router.patch('/programs/:programId', [ProgramController, 'update'])
+  router.patch('/programs/:programId/instructions', [ProgramController, 'updateInstructions'])
   router.post('/programs/:programId/import', [ProgramController, 'import'])
   router.post('/programs/:programId/run', [ProgramController, 'run'])
 }
