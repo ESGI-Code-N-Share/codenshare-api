@@ -109,6 +109,7 @@ export default class ProgramController {
         validProgram.pictureURL,
         validProgram.code || '',
         validProgram.language,
+        validProgram.version || '',
         validProgram.visibility as ProgramVisibility,
         validProgram.authorId
       )

@@ -20,6 +20,7 @@ export const updateProgramsValidator = vine.compile(
     pictureURL: vine.string().trim().url(),
     visibility: vine.string().trim().in(['public', 'private', 'protected']),
     language: vine.string().trim(),
+    version: vine.string().trim().optional(),
     code: vine.string().trim().optional(),
   })
 )

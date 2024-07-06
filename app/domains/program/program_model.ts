@@ -25,6 +25,7 @@ export class Program {
   description: string
   pictureName: string
   language: ProgramLanguages
+  version: string
   programVisibility: ProgramVisibility
   author: User
   originalAuthor: User
@@ -38,6 +39,7 @@ export class Program {
     code: string,
     pictureName: string,
     language: string,
+    version: string,
     programVisibility: ProgramVisibility,
     originalAuthor: User,
     author: User,
@@ -50,6 +52,7 @@ export class Program {
     this.code = code
     this.pictureName = pictureName
     this.language = language
+    this.version = version
     this.programVisibility = programVisibility
     this.originalAuthor = originalAuthor
     this.author = author
@@ -74,6 +77,7 @@ export class Program {
       code,
       pictureName,
       language,
+      '',
       programVisibility,
       originalAuthor,
       author,
@@ -95,6 +99,7 @@ export class Program {
       '',
       pictureName,
       '',
+      '',
       programVisibility,
       originalAuthor,
       author,
@@ -110,6 +115,7 @@ export class Program {
     code: string
     pictureName: string
     language: string
+    version: string
     programVisibility: ProgramVisibility
     originalAuthor: UserEntity
     author: UserEntity
@@ -123,6 +129,7 @@ export class Program {
       data.code,
       data.pictureName,
       data.language,
+      data.version,
       data.programVisibility,
       data.originalAuthor.toDomain(),
       data.author.toDomain(),
@@ -139,6 +146,7 @@ export class Program {
     programEntity.code = this.code
     programEntity.description = this.description
     programEntity.language = this.language
+    programEntity.version = this.version
     programEntity.visibility = this.programVisibility
     programEntity.pictureName = this.pictureName
     programEntity.author_id = this.author.userId
@@ -168,6 +176,7 @@ export class Program {
       code: this.code,
       authorId: this.author.userId,
       language: this.language,
+      version: this.version,
       visibility: this.programVisibility.toString(),
       authorName: this.author.firstname,
       authorLastName: this.author.lastname,

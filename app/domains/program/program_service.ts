@@ -76,6 +76,7 @@ export class ProgramService implements ProgramServicePort {
     pictureName: string,
     code: string,
     language: string,
+    version: string,
     visibility: ProgramVisibility,
     userId: UserId
   ) {
@@ -101,6 +102,7 @@ export class ProgramService implements ProgramServicePort {
     program.description = description
     program.pictureName = pictureName
     program.language = language
+    program.version = version
     program.programVisibility = visibility
     program.author = editor
 
