@@ -15,6 +15,7 @@ export interface ProgramServicePort {
     pictureName: string,
     code: string,
     language: string,
+    version: string,
     visibility: ProgramVisibility,
     userId: UserId
   ): Promise<void>

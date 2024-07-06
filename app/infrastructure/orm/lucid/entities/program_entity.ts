@@ -33,6 +33,9 @@ export default class ProgramEntity extends BaseModel {
   declare language: string
 
   @column()
+  declare version: string
+
+  @column()
   declare visibility: ProgramVisibility
 
   @column()
@@ -63,7 +66,6 @@ export default class ProgramEntity extends BaseModel {
   declare deletedAt?: DateTime
 
   toDomain(): Program {
-    console.log(this.instructions)
     return Program.fromPersistence({
       programId: this.programId,
       name: this.name,
@@ -71,6 +73,7 @@ export default class ProgramEntity extends BaseModel {
       code: this.code,
       pictureName: this.pictureName,
       language: this.language,
+      version: this.version,
       programVisibility: this.visibility,
       originalAuthor: this.originalAuthor,
       author: this.author,

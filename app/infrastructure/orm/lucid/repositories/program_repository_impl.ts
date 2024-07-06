@@ -47,6 +47,7 @@ export class ProgramRepositoryImpl implements ProgramRepositoryPort {
     program.code = programUpdated.code
     program.description = programUpdated.description
     program.language = programUpdated.language
+    program.version = programUpdated.version
     program.visibility = programUpdated.visibility
     program.pictureName = programUpdated.pictureName
     program.author_id = programUpdated.author_id

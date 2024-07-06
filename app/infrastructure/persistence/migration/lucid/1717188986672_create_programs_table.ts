@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.text('description').nullable()
       table.string('picture_name').nullable()
       table.string('language').nullable()
+      table.string('version').defaultTo('')
       table.enum('visibility', ['public', 'private', 'protected']).defaultTo('private')
       table.text('code').nullable()
       table.uuid('author_id').references('user_id').inTable('users')
