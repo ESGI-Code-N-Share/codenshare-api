@@ -21,5 +21,5 @@ export interface ProgramServicePort {
   ): Promise<void>
 
   delete(id: ProgramId, userId: UserId): Promise<ProgramId>
-  import(id: ProgramId, userId: UserId): Promise<void>
+  import(id: ProgramId, userId: UserId): Promise<string>
 }

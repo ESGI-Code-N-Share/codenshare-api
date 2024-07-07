@@ -90,8 +90,8 @@ export default class ProgramController {
       const data = request.all()
       const validProgram = await programsValidator.validate(data)
 
-      await this.programService.import(params.programId, validProgram.userId)
-      return response.status(200)
+      const newProgramId = await this.programService.import(params.programId, validProgram.userId)
+      return response.status(200).send({ data: newProgramId })
     } catch (e) {
       console.error(e)
       return response.status(400).send({ message: e.message })

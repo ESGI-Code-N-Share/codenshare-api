@@ -130,7 +130,7 @@ export class ProgramService implements ProgramServicePort {
     return program.originalAuthor.userId === userId
   }
 
-  async import(id: ProgramId, userId: UserId): Promise<void> {
+  async import(id: ProgramId, userId: UserId): Promise<string> {
     const user = await this.userService.getById(userId)
     const program = await this.getById(id)
 
@@ -157,7 +157,7 @@ export class ProgramService implements ProgramServicePort {
       program.createdAt
     )
 
-    await this.programRepository.create(programImported.toEntity())
+    return this.programRepository.create(programImported.toEntity())
   }
 
   async execute(programId: ProgramId, userId: UserId): Promise<string> {

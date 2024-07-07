@@ -41,7 +41,7 @@ export class ProgramRepositoryImpl implements ProgramRepositoryPort {
 
   async getProgramsByUser(user: User): Promise<Program[]> {
     const programs = await ProgramEntity.query()
-      .where('original_author_id', user.userId)
+      .where('author_id', user.userId)
       .whereNull('deletedAt')
       .preload('author')
       .preload('originalAuthor')
