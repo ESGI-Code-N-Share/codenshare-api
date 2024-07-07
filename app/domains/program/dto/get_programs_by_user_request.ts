@@ -4,6 +4,7 @@ export interface GetProgramsRequest {
   description: string
   imageURL: string
   authorId: string
+  language: string
   originalAuthorId: string
   visibility: string
   createdAt: string

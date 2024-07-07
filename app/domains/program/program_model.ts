@@ -174,6 +174,7 @@ export class Program {
       originalAuthorId: this.originalAuthor.userId,
       visibility: this.programVisibility.toString(),
       createdAt: this.createdAt.toISOString(),
+      language: this.language,
     }
   }
 
