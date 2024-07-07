@@ -20,6 +20,7 @@ export class MessageRepositoryImpl implements MessageRepositoryPort {
       conversationId: message.conversationId,
       senderId: message.sender.userId,
       content: message.content,
+      image: message.image,
     })
     const savedMessage = await MessageEntity.query()
       .where('messageId', newMessage.messageId)

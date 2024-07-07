@@ -21,10 +21,10 @@ export class MessageService {
   }
 
   async send(messageDto: SendMessageDto): Promise<Message> {
-    const { conversationId, senderId, content } = messageDto
+    const { conversationId, senderId, content, image } = messageDto
     const sender = await this.userService.getById(senderId)
     const conversation = await this.conversationService.getById(conversationId)
-    const message = Message.new(content, sender, conversation.conversationId)
+    const message = Message.new(content, sender, conversation.conversationId, image)
     return this.messageRepository.create(message)
   }
 }

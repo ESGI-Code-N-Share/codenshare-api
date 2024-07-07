@@ -5,5 +5,6 @@ export const sendMessageValidator = vine.compile(
     userId: vine.string().uuid(),
     conversationId: vine.string().uuid(),
     content: vine.string().trim().minLength(1),
+    image: vine.string().startsWith('http').optional(),
   })
 )

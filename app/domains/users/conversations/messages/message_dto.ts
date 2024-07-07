@@ -5,4 +5,5 @@ export interface SendMessageDto {
   conversationId: ConversationId
   senderId: UserId
   content: string
+  image?: string
 }

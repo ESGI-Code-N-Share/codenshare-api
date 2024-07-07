@@ -28,6 +28,7 @@ export default class MessageController {
         conversationId: validSend.conversationId,
         senderId: validSend.userId,
         content: validSend.content,
+        image: validSend.image,
       }
       const message = await this.messageService.send(sendMessageDto)
       return response.status(201).json({ data: message })
