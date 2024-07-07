@@ -79,6 +79,7 @@ export default class ProgramEntity extends BaseModel {
       author: this.author,
       codeHistories: this.codeHistories,
       instructions: this.instructions as ProgramInstructions,
+      createdAt: this.createdAt.toJSDate(),
     })
   }
 }

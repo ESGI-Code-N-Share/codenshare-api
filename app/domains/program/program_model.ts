@@ -31,6 +31,7 @@ export class Program {
   originalAuthor: User
   codeHistories: CodeHistory[]
   instructions: ProgramInstructions
+  createdAt: Date
 
   constructor(
     id: ProgramId,
@@ -44,7 +45,8 @@ export class Program {
     originalAuthor: User,
     author: User,
     codeHistories: CodeHistory[],
-    instructions: ProgramInstructions
+    instructions: ProgramInstructions,
+    createdAt: Date
   ) {
     this.programId = id
     this.name = name
@@ -58,6 +60,7 @@ export class Program {
     this.author = author
     this.codeHistories = codeHistories
     this.instructions = instructions
+    this.createdAt = createdAt
   }
 
   static new(
@@ -68,7 +71,8 @@ export class Program {
     language: string,
     programVisibility: ProgramVisibility,
     originalAuthor: User,
-    author: User
+    author: User,
+    createdAt: Date
   ) {
     return new Program(
       randomUUID(),
@@ -82,7 +86,8 @@ export class Program {
       originalAuthor,
       author,
       [],
-      { inputs: [], outputs: [] }
+      { inputs: [], outputs: [] },
+      createdAt
     )
   }
 
@@ -104,7 +109,8 @@ export class Program {
       originalAuthor,
       author,
       [],
-      { inputs: [], outputs: [] }
+      { inputs: [], outputs: [] },
+      new Date()
     )
   }
 
@@ -121,6 +127,7 @@ export class Program {
     author: UserEntity
     codeHistories: CodeHistoryEntity[]
     instructions: ProgramInstructions
+    createdAt: Date
   }) {
     return new Program(
       data.programId,
@@ -134,7 +141,8 @@ export class Program {
       data.originalAuthor.toDomain(),
       data.author.toDomain(),
       data.codeHistories.map((codeHistory) => codeHistory.toDomain()),
-      data.instructions
+      data.instructions,
+      data.createdAt
     )
   }
 
@@ -163,7 +171,9 @@ export class Program {
       description: this.description,
       imageURL: this.pictureName,
       authorId: this.author.userId,
+      originalAuthorId: this.originalAuthor.userId,
       visibility: this.programVisibility.toString(),
+      createdAt: this.createdAt.toISOString(),
     }
   }
 

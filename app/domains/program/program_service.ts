@@ -149,7 +149,8 @@ export class ProgramService implements ProgramServicePort {
       program.language,
       'private',
       program.originalAuthor,
-      user
+      user,
+      program.createdAt
     )
 
     await this.programRepository.create(programImported.toEntity())
