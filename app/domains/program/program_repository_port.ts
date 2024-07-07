@@ -3,6 +3,7 @@ import { Program, ProgramId } from '#domains/program/program_model'
 import ProgramEntity from '#infrastructure/orm/lucid/entities/program_entity'
 
 export interface ProgramRepositoryPort {
+  getAll(): Promise<Program[]>
   getById(id: string): Promise<Program>
   getProgramsByUser(user: User): Promise<Program[]>
   getProgramsByName(name: string): Promise<Program[]>

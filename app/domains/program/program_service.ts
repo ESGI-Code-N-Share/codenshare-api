@@ -36,8 +36,12 @@ export class ProgramService implements ProgramServicePort {
 
   async getAllByUser(userId: UserId): Promise<GetProgramsRequest[]> {
     const user: User = await this.userService.getById(userId)
-    const programs = await this.programRepository.getProgramsByUser(user)
+    if (user.role === 'admin') {
+      const programs = await this.programRepository.getAll()
+      return programs.map((program) => program.toGetProgramsRequest())
+    }
 
+    const programs = await this.programRepository.getProgramsByUser(user)
     return programs.map((program) => program.toGetProgramsRequest())
   }
 

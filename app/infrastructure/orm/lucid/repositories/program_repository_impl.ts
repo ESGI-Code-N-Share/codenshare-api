@@ -5,6 +5,16 @@ import ProgramEntity from '../entities/program_entity.js'
 import { DateTime } from 'luxon'
 
 export class ProgramRepositoryImpl implements ProgramRepositoryPort {
+  async getAll() {
+    const programs = await ProgramEntity.query()
+      .whereNull('deletedAt')
+      .preload('author')
+      .preload('originalAuthor')
+      .preload('codeHistories')
+
+    return programs.map((program) => program.toDomain())
+  }
+
   async create(programEntity: ProgramEntity): Promise<ProgramId> {
     await ProgramEntity.create(programEntity)
     return programEntity.programId
