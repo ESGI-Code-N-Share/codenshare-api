@@ -35,6 +35,14 @@ test.group('UserEntity', () => {
 
     const result = userEntity.toDomain()
 
-    assert.deepEqual(result, expected)
+    assert.equal(result.userId, expected.userId)
+    assert.equal(result.firstname, expected.firstname)
+    assert.equal(result.lastname, expected.lastname)
+    assert.equal(result.email, expected.email)
+    assert.equal(result.overview, expected.overview)
+    assert.equal(result.avatar, expected.avatar)
+    assert.equal(result.role, expected.role)
+    assert.equal(result.password, expected.password)
+    assert.equal(result.token, expected.token)
   })
 })

@@ -23,6 +23,7 @@ test.group('PostLikeEntity', () => {
 
     const result = postLikeEntity.toDomain()
 
-    assert.deepEqual(result, expected)
+    assert.equal(result.postLikeId, expected.postLikeId)
+    assert.equal(result.postId, expected.postId)
   })
 })

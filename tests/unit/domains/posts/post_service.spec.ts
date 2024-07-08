@@ -10,17 +10,19 @@ import { PostException, PostMessageException } from '#domains/posts/post_excepti
 import { CreatePostDto } from '#domains/posts/post_dto'
 import Post from '#domains/posts/post_model'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
+import {ProgramService} from "#domains/program/program_service";
 
 test.group('PostService - GetAll', (group) => {
   let postService: PostService
   let postRepository: PostRepositoryImpl
   let userService: UserService
   let userRepository: UserRepositoryImpl
+  let programService: ProgramService
 
   group.each.setup(() => {
     postRepository = new PostRepositoryImpl()
     userService = new UserService(userRepository)
-    postService = new PostService(postRepository, userService)
+    postService = new PostService(postRepository, userService, programService)
   })
 
   test('should get all posts', async ({ assert }) => {
@@ -57,11 +59,12 @@ test.group('PostService - GetById', (group) => {
   let postRepository: PostRepositoryImpl
   let userService: UserService
   let userRepository: UserRepositoryImpl
+  let programService: ProgramService
 
   group.each.setup(() => {
     postRepository = new PostRepositoryImpl()
     userService = new UserService(userRepository)
-    postService = new PostService(postRepository, userService)
+    postService = new PostService(postRepository, userService, programService)
   })
 
   test('should get a post by id if post exist', async ({ assert }) => {
@@ -101,11 +104,12 @@ test.group('PostService - GetByUser', (group) => {
   let postRepository: PostRepositoryImpl
   let userService: UserService
   let userRepository: UserRepositoryImpl
+  let programService: ProgramService
 
   group.each.setup(() => {
     postRepository = new PostRepositoryImpl()
     userService = new UserService(userRepository)
-    postService = new PostService(postRepository, userService)
+    postService = new PostService(postRepository, userService, programService)
   })
 
   test('should get all posts by user', async ({ assert }) => {
@@ -144,11 +148,12 @@ test.group('PostService - GetAll', (group) => {
   let postRepository: PostRepositoryImpl
   let userService: UserService
   let userRepository: UserRepositoryImpl
+  let programService: ProgramService
 
   group.each.setup(() => {
     postRepository = new PostRepositoryImpl()
     userService = new UserService(userRepository)
-    postService = new PostService(postRepository, userService)
+    postService = new PostService(postRepository, userService, programService)
   })
 
   test('should create a post', async ({ assert }) => {
@@ -231,11 +236,12 @@ test.group('PostService - Delete', (group) => {
   let postRepository: PostRepositoryImpl
   let userService: UserService
   let userRepository: UserRepositoryImpl
+  let programService: ProgramService
 
   group.each.setup(() => {
     postRepository = new PostRepositoryImpl()
     userService = new UserService(userRepository)
-    postService = new PostService(postRepository, userService)
+    postService = new PostService(postRepository, userService, programService)
   })
 
   test('should throw PostException if post not found', async ({ assert }) => {

@@ -42,6 +42,7 @@ test.group('PostEntity', () => {
       author: author,
       postedAt: postedAt.toJSDate(),
       image: undefined,
+      programId: undefined,
       likes: likes,
     }
 

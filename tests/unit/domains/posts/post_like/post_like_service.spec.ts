@@ -12,6 +12,7 @@ import { UserSample } from '#tests/unit/domains/utils/user_sample'
 import { PostLikeMessageException } from '#domains/posts/post_like/post_like_exception'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
 import { PostException, PostMessageException } from '#domains/posts/post_exception'
+import { ProgramService } from '#domains/program/program_service'
 
 test.group('PostLikeService - LikePost', (group) => {
   let postLikeService: PostLikeService
@@ -20,13 +21,14 @@ test.group('PostLikeService - LikePost', (group) => {
   let postRepository: PostRepositoryImpl
   let userService: UserService
   let userRepository: UserRepositoryImpl
+  let programService: ProgramService
 
   group.each.setup(() => {
     postLikeRepository = new PostLikeRepositoryImpl()
     postRepository = new PostRepositoryImpl()
     userRepository = new UserRepositoryImpl()
     userService = new UserService(userRepository)
-    postService = new PostService(postRepository, userService)
+    postService = new PostService(postRepository, userService, programService)
     postLikeService = new PostLikeService(postLikeRepository, postService, userService)
   })
 
@@ -141,13 +143,14 @@ test.group('PostLikeService - UnlikePost', (group) => {
   let postRepository: PostRepositoryImpl
   let userService: UserService
   let userRepository: UserRepositoryImpl
+  let programService: ProgramService
 
   group.each.setup(() => {
     postLikeRepository = new PostLikeRepositoryImpl()
     postRepository = new PostRepositoryImpl()
     userRepository = new UserRepositoryImpl()
     userService = new UserService(userRepository)
-    postService = new PostService(postRepository, userService)
+    postService = new PostService(postRepository, userService, programService)
     postLikeService = new PostLikeService(postLikeRepository, postService, userService)
   })
 
