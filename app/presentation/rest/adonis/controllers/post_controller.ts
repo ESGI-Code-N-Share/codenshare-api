@@ -37,6 +37,7 @@ export default class PostController {
         content: validPost.content,
         authorId: validPost.authorId,
         image: validPost.image,
+        programId: validPost.programId,
       }
       const post = await this.postService.create(postCreateDto)
       return response.status(201).json({ data: { postId: post.postId } })

@@ -6,6 +6,7 @@ export const createPostValidator = vine.compile(
     content: vine.string().trim().minLength(1),
     authorId: vine.string().uuid(),
     image: vine.string().optional(),
+    programId: vine.string().uuid().optional(),
   })
 )
 

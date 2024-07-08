@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string('title').notNullable()
       table.text('content').notNullable()
       table.string('image').nullable()
+      table.uuid('program_id').nullable()
       table.uuid('author_id').references('user_id').inTable('users').notNullable()
 
       table.timestamp('posted_at')

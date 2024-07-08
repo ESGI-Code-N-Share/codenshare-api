@@ -6,14 +6,18 @@ import { UserService } from '#domains/users/user_service'
 import { inject } from '@adonisjs/core'
 import { UserId } from '#domains/users/user_model'
 import { ProgramException, ProgramMessageException } from '#domains/program/program_exceptions'
+import { ProgramService } from '#domains/program/program_service'
 
 @inject()
 export class PostService {
   constructor(
     private readonly postRepository: PostRepositoryImpl,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly programService: ProgramService
   ) {
     this.postRepository = postRepository
+    this.userService = userService
+    this.programService = programService
   }
 
   async getAll(): Promise<Post[]> {
@@ -36,8 +40,13 @@ export class PostService {
     if (!postDto.authorId || !postDto.title || !postDto.content) {
       throw new PostException(PostMessageException.INVALID_PAYLOAD)
     }
+
+    if (postDto.programId) {
+      await this.programService.getProgram(postDto.programId)
+    }
+
     const user = await this.userService.getById(postDto.authorId)
-    const post = Post.new(postDto.title, postDto.content, user, postDto.image)
+    const post = Post.new(postDto.title, postDto.content, user, postDto.image, postDto.programId)
     return this.postRepository.create(post)
   }
 

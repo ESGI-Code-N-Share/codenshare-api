@@ -42,6 +42,7 @@ export class PostRepositoryImpl implements PostRepositoryPort {
       content: post.content,
       authorId: post.author.userId,
       image: post.image,
+      programId: post.programId,
     })
     const savedPost = await PostEntity.query()
       .where('postId', newPost.postId)

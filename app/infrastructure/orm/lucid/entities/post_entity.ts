@@ -22,6 +22,9 @@ export default class PostEntity extends BaseModel {
   declare image?: string
 
   @column()
+  declare programId?: string
+
+  @column()
   declare authorId: UserId
 
   @hasMany(() => PostLikeEntity, {
@@ -49,6 +52,7 @@ export default class PostEntity extends BaseModel {
       postedAt: this.postedAt.toJSDate(),
       likes: this.likes.map((like) => like.toDomain()),
       image: this.image,
+      programId: this.programId,
     })
   }
 }
