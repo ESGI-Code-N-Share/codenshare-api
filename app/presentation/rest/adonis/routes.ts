@@ -8,6 +8,7 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import env from '#start/env'
 import { middleware } from '#start/kernel'
 
 const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
@@ -21,6 +22,7 @@ const ConversationController = () =>
   import('#presentation/rest/adonis/controllers/conversation_controller')
 const PostLikeController = () =>
   import('#presentation/rest/adonis/controllers/post_like_controller')
+const PopulateController = () => import('#presentation/rest/adonis/controllers/populate_controller')
 
 const messageRouter = () => {
   router
@@ -101,5 +103,13 @@ router
         friendRouter()
       })
       .use([middleware.auth()])
+  })
+  .prefix('/api/v1')
+
+router
+  .group(() => {
+    if (['test', 'development'].includes(env.get('NODE_ENV'))) {
+      router.get('/populate', [PopulateController, 'run'])
+    }
   })
   .prefix('/api/v1')
