@@ -14,7 +14,7 @@ export class EdcService {
     programId: string,
     code: string,
     language: string,
-    version: number | null
+    version: string
   ): Promise<string> {
     try {
       const response = await this.httpClient.post('/execute-code', {

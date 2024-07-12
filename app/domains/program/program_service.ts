@@ -168,7 +168,12 @@ export class ProgramService implements ProgramServicePort {
     }
 
     await this.codeHistoryService.create(program)
-    return await this.edcService.executeCode(programId, program.code, program.language, 11)
+    return await this.edcService.executeCode(
+      programId,
+      program.code,
+      program.language,
+      program.version
+    )
   }
 
   private async getById(id: ProgramId): Promise<Program> {
