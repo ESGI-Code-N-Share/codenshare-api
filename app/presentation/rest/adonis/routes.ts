@@ -11,6 +11,9 @@ import router from '@adonisjs/core/services/router'
 import env from '#start/env'
 import { middleware } from '#start/kernel'
 
+import AutoSwagger from 'adonis-autoswagger'
+import swagger from '#config/swagger'
+
 const AuthController = () => import('#presentation/rest/adonis/controllers/auth_controller')
 const UserController = () => import('#presentation/rest/adonis/controllers/user_controller')
 const PostController = () => import('#presentation/rest/adonis/controllers/post_controller')
@@ -113,3 +116,12 @@ router
     }
   })
   .prefix('/api/v1')
+
+router.get('/swagger', async () => {
+  return AutoSwagger.default.docs(router.toJSON(), swagger)
+})
+
+// Renders Swagger-UI and passes YAML-output of /swagger
+router.get('/docs', async () => {
+  return AutoSwagger.default.ui('/swagger', swagger)
+})
