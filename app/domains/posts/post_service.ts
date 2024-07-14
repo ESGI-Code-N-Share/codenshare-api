@@ -59,8 +59,8 @@ export class PostService {
   async delete(postId: PostId, userId: UserId): Promise<PostId> {
     const post = await this.getById(postId)
     const isAuthor = await this.isPostAuthor(postId, userId)
-    if (isAuthor) {
-      throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
+    if (!isAuthor) {
+      throw new PostException(PostMessageException.PERMISSION_DENIED)
     }
     return this.postRepository.delete(post.postId)
   }
