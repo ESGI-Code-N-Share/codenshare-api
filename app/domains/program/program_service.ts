@@ -59,8 +59,13 @@ export class ProgramService implements ProgramServicePort {
 
   async createDefault(userId: UserId): Promise<ProgramId> {
     const user: User = await this.userService.getById(userId)
-
-    const defaultPictureName = `https://picsum.photos/536/${Math.floor(Math.random() * 536)}`
+    const photos = [
+      'https://fastly.picsum.photos/id/364/300/300.jpg?hmac=Jc5K7zP1K2ZsBWPGk6c4raWWOuYXzXz7Gj6LXNpuq6s',
+      'https://fastly.picsum.photos/id/162/300/300.jpg?hmac=YYwB3vsUblmGV6TR8Jrt46RA6O7v3rhcMTT3iUFC7LQ',
+      'https://fastly.picsum.photos/id/719/300/300.jpg?hmac=LumeKhy-hJsLsniO_ajSrRJJxeRzqg7tXAdxZ6hOE_c',
+      'https://fastly.picsum.photos/id/16/300/300.jpg?hmac=2Su1BGuhhzPdRJSgk_MKu0eOU5fOTFIMMj4dqpJAThs',
+    ]
+    const defaultPictureName = photos[Math.floor(Math.random() * photos.length)]
     const newProgram = Program.default(defaultPictureName, 'private', user, user)
 
     return this.programRepository.create(newProgram.toEntity())

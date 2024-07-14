@@ -37,7 +37,11 @@ export class AuthService {
     }
 
     const passwordHashed = await Hash.make(password)
-    const defaultPictureName = `https://picsum.photos/536/${Math.floor(Math.random() * 536)}`
+    const photos = [
+      'https://randomwordgenerator.com/img/picture-generator/55e4d5464f5ba914f1dc8460962e33791c3ad6e04e5074417d2d73dc934bcd_640.jpg',
+      'https://randomwordgenerator.com/img/picture-generator/55e2dc454c5aaa14f1dc8460962e33791c3ad6e04e507441722872d59f4ac3_640.jpg',
+      'https://randomwordgenerator.com/img/picture-generator/54e6d5464f52ae14f1dc8460962e33791c3ad6e04e50744172297cdc9e48c3_640.jpg'
+    ]
     try {
       const newUser = User.new(
         firstname,
@@ -45,7 +49,7 @@ export class AuthService {
         email,
         birthdate,
         passwordHashed,
-        defaultPictureName
+        photos[Math.floor(Math.random() * photos.length)]
       )
       const createdUser = await this.userService.create(newUser)
       return createdUser.userId
