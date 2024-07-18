@@ -32,7 +32,8 @@ test.group('UserService - GetById', (group) => {
   })
 
   test('should get a user by id if user exist', async ({ assert }) => {
-    const userId = '1'
+    const userId = '2'
+    const expected = '1'
     const getByIdStub = sinon
       .stub(userRepository, 'getById')
       .resolves(UserSample.new({ userId: userId }))
@@ -40,7 +41,7 @@ test.group('UserService - GetById', (group) => {
     const user = await userService.getById(userId)
 
     assert.exists(user)
-    assert.equal(user.userId, userId)
+    assert.equal(user.userId, expected)
     assert.isTrue(getByIdStub.calledOnce)
 
     getByIdStub.restore()
