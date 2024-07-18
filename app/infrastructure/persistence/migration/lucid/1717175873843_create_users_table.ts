@@ -15,6 +15,7 @@ export default class extends BaseSchema {
       table.string('avatar', 255).notNullable()
       table.enu('role', ['admin', 'moderator', 'user']).defaultTo('user')
       table.string('password', 255).notNullable()
+      table.boolean('email_verified').defaultTo(false)
 
       table.string('overview', 255).defaultTo('')
       table.string('token', 255).nullable()
@@ -43,6 +44,7 @@ export default class extends BaseSchema {
           password: await Hash.make('adminfiters'),
           firstname: 'Admin',
           lastname: 'CNS',
+          email_verified: true,
           avatar: 'https://secure.gravatar.com/avatar/1',
           birthdate: '1980-01-01',
           role: 'admin',
@@ -64,6 +66,7 @@ export default class extends BaseSchema {
           password: await Hash.make('adminfiters'),
           firstname: 'Corentin',
           lastname: 'Lechene',
+          email_verified: true,
           avatar: 'https://randomuser.me/api/portraits/men/9.jpg',
           birthdate: '1990-01-01',
           role: 'user',

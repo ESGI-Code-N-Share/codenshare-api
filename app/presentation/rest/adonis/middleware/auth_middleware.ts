@@ -4,7 +4,7 @@ export default class AuthMiddleware {
   async handle({ response, auth }: HttpContext, next: () => Promise<void>) {
     try {
       if (!auth || !auth.user) {
-        response.unauthorized({ message: 'User not authenticated' })
+        response.unauthorized({ message: 'User not authenticated 2' })
         response.finish()
       }
 
