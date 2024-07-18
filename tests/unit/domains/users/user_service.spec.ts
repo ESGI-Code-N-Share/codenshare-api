@@ -32,7 +32,7 @@ test.group('UserService - GetById', (group) => {
   })
 
   test('should get a user by id if user exist', async ({ assert }) => {
-    const userId = '2'
+    const userId = '1'
     const expected = '1'
     const getByIdStub = sinon
       .stub(userRepository, 'getById')
