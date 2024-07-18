@@ -6,6 +6,7 @@ import { AuthException, AuthMessageException } from '#domains/auth/auth_exceptio
 import Hash from '@adonisjs/core/services/hash'
 import JwtUtil from '#config/jwt'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
+import { EmailService } from '#domains/auth/email_service'
 
 @inject()
 export class AuthService {
@@ -30,7 +31,14 @@ export class AuthService {
   }
 
   async register(registerAuthDto: RegisterAuthDto): Promise<UserId> {
-    const { email, password, firstname, lastname, birthdate } = registerAuthDto
+    const {
+      email,
+      password,
+      firstname,
+      lastname,
+      birthdate,
+      emailVerified = false,
+    } = registerAuthDto
     const existingUser = await this.userService.getByEmail(email)
     if (existingUser) {
       throw new AuthException(AuthMessageException.USER_WITH_EMAIL_ALREADY_EXISTS)
@@ -40,7 +48,7 @@ export class AuthService {
     const photos = [
       'https://randomwordgenerator.com/img/picture-generator/55e4d5464f5ba914f1dc8460962e33791c3ad6e04e5074417d2d73dc934bcd_640.jpg',
       'https://randomwordgenerator.com/img/picture-generator/55e2dc454c5aaa14f1dc8460962e33791c3ad6e04e507441722872d59f4ac3_640.jpg',
-      'https://randomwordgenerator.com/img/picture-generator/54e6d5464f52ae14f1dc8460962e33791c3ad6e04e50744172297cdc9e48c3_640.jpg'
+      'https://randomwordgenerator.com/img/picture-generator/54e6d5464f52ae14f1dc8460962e33791c3ad6e04e50744172297cdc9e48c3_640.jpg',
     ]
     try {
       const newUser = User.new(
@@ -49,9 +57,11 @@ export class AuthService {
         email,
         birthdate,
         passwordHashed,
-        photos[Math.floor(Math.random() * photos.length)]
+        photos[Math.floor(Math.random() * photos.length)],
+        emailVerified
       )
       const createdUser = await this.userService.create(newUser)
+      await EmailService.sendVerificationEmail(createdUser)
       return createdUser.userId
     } catch (error) {
       console.error('Registration Error:', error)
@@ -66,6 +76,20 @@ export class AuthService {
     }
 
     user.token = null
+    await this.userService.update(user)
+  }
+
+  async verifyEmail(userId: UserId): Promise<void> {
+    const user = await this.userService.getById(userId)
+    if (!user) {
+      throw new UserException(UserMessageException.USER_NOT_FOUND)
+    }
+
+    if (user.emailVerified) {
+      throw new UserException(UserMessageException.EMAIL_ALREADY_VERIFIED)
+    }
+
+    user.emailVerified = true
     await this.userService.update(user)
   }
 }

@@ -18,6 +18,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   JWT_SECRET_KEY: Env.schema.string(),
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),
+  FRONTEND_URL: Env.schema.string(),
 
   /*
   |----------------------------------------------------------
@@ -36,4 +37,11 @@ export default await Env.create(new URL('../', import.meta.url), {
   |----------------------------------------------------------
   */
   EDC_URL: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring the mail package
+  |----------------------------------------------------------
+  */
+  BREVO_API_KEY: Env.schema.string(),
 })

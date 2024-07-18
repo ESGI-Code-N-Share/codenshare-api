@@ -6,6 +6,7 @@ import {
   registerAuthValidator,
 } from '#presentation/rest/adonis/controllers/auth_validator'
 import { LoginAuthDto, RegisterAuthDto } from '#domains/auth/auth_dto'
+import env from '#start/env'
 
 @inject()
 export default class AuthController {
@@ -29,25 +30,35 @@ export default class AuthController {
       })
     } catch (e) {
       console.error(e)
-      return response.status(400).send({ message: e.message })
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
     }
   }
 
   async register({ request, response }: HttpContext) {
     try {
       const validData = await registerAuthValidator.validate(request.body())
+      const defaultEmailVerified = validData.emailVerified || false
       const registerAuthDto: RegisterAuthDto = {
         firstname: validData.firstname,
         lastname: validData.lastname,
         email: validData.email,
         password: validData.password,
         birthdate: new Date(validData.birthdate),
+        emailVerified: defaultEmailVerified,
       }
       const userId = await this.authService.register(registerAuthDto)
       return response.status(201).json({ data: userId })
     } catch (e) {
       console.error('Registration error:', e)
-      return response.status(400).send({ message: e.message })
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
     }
   }
 
@@ -58,7 +69,45 @@ export default class AuthController {
       return response.status(200).json({ message: 'Logout successful' })
     } catch (e) {
       console.error(e)
-      return response.status(400).send({ message: e.message })
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
+    }
+  }
+
+  async verifyEmail({ params, request, response }: HttpContext) {
+    try {
+      const userId = params.id
+      if (!userId) {
+        return response.status(400).send({
+          data: {
+            message: 'Invalid user id',
+          },
+        })
+      }
+
+      await this.authService.verifyEmail(userId)
+
+      const userAgent = request.header('User-Agent')
+      console.log('User-Agent:', userAgent)
+      const isMobile = userAgent && (userAgent.includes('Android') || userAgent.includes('okhttp'))
+
+      if (isMobile) {
+        console.log('Request is from a mobile device')
+        return response.redirect('codenshare://verify-email-success')
+      } else {
+        console.log('Request is from a web browser')
+        return response.redirect(`${env.get('FRONTEND_URL')}/email-verified`)
+      }
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
     }
   }
 }
