@@ -17,6 +17,7 @@ test.group('MessageEntity', () => {
       email: 'john.doe@email.com',
       birthdate: new Date('1990-01-01'),
       avatar: 'avatar.png',
+      emailVerified: true,
       role: 'user',
       overview: '',
       password: '',

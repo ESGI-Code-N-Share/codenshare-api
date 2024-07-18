@@ -11,7 +11,7 @@ test.group('User Model', () => {
     const password = 'password123'
     const role = 'user'
 
-    const user = User.new(firstname, lastname, email, birthdate, password, avatar, role)
+    const user = User.new(firstname, lastname, email, birthdate, password, avatar, true, role)
 
     assert.exists(user.userId)
     assert.equal(user.firstname, firstname)
@@ -32,6 +32,7 @@ test.group('User Model', () => {
       email: 'jane.doe@example.com',
       birthdate: new Date('1995-05-15'),
       avatar: 'avatar2.png',
+      emailVerified: true,
       role: 'admin' as const,
       password: 'password456',
       createdAt: new Date('2022-01-01'),

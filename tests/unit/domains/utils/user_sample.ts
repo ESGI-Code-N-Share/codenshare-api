@@ -5,6 +5,7 @@ export class UserSample {
     return {
       userId: userData.userId ?? '1',
       email: userData.email ?? 'jhon.doe@email.com',
+      emailVerified: true,
       firstname: userData.firstname ?? 'Jhon',
       lastname: userData.lastname ?? 'Doe',
       birthdate: userData.birthdate ?? new Date('1990-01-01'),

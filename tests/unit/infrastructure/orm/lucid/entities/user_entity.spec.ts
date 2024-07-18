@@ -11,6 +11,7 @@ test.group('UserEntity', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: 'john.doe@email.com',
+      emailVerified: true,
       birthdate: new Date('1990-01-01'),
       avatar: 'avatar.png',
       role: 'user',

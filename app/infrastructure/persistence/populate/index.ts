@@ -46,6 +46,7 @@ export class Populate {
         lastname: faker.person.lastName(),
         email: faker.internet.email().toLowerCase(),
         password: 'admincns',
+        emailVerified: faker.datatype.boolean(),
         birthdate: faker.date.past({ years: faker.number.int({ min: 18, max: 60 }) }),
       })
 
