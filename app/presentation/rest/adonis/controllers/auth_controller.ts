@@ -30,7 +30,11 @@ export default class AuthController {
       })
     } catch (e) {
       console.error(e)
-      return response.status(400).send({ message: e.message })
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
     }
   }
 
@@ -50,7 +54,11 @@ export default class AuthController {
       return response.status(201).json({ data: userId })
     } catch (e) {
       console.error('Registration error:', e)
-      return response.status(400).send({ message: e.message })
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
     }
   }
 
@@ -61,7 +69,11 @@ export default class AuthController {
       return response.status(200).json({ message: 'Logout successful' })
     } catch (e) {
       console.error(e)
-      return response.status(400).send({ message: e.message })
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
     }
   }
 
@@ -69,7 +81,11 @@ export default class AuthController {
     try {
       const userId = params.id
       if (!userId) {
-        return response.status(400).send({ message: 'Invalid user ID' })
+        return response.status(400).send({
+          data: {
+            message: 'Invalid user id',
+          },
+        })
       }
 
       await this.authService.verifyEmail(userId)
@@ -87,12 +103,11 @@ export default class AuthController {
       }
     } catch (e) {
       console.error(e)
-      return response.status(400).send({ message: e.message })
+      return response.status(400).send({
+        data: {
+          message: e.message,
+        },
+      })
     }
-  }
-
-
-  async ping({ response }: HttpContext) {
-    response.send('pong')
   }
 }

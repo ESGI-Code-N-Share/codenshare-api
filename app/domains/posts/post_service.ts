@@ -5,7 +5,6 @@ import { PostRepositoryImpl } from '#infrastructure/orm/lucid/repositories/post_
 import { UserService } from '#domains/users/user_service'
 import { inject } from '@adonisjs/core'
 import { UserId } from '#domains/users/user_model'
-import { ProgramException, ProgramMessageException } from '#domains/program/program_exceptions'
 import { ProgramService } from '#domains/program/program_service'
 
 @inject()
