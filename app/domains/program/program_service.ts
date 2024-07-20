@@ -172,9 +172,9 @@ export class ProgramService implements ProgramServicePort {
       throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
     }
 
-    const codeHistoryId = await this.codeHistoryService.create(program)
+    await this.codeHistoryService.create(program)
     return await this.edcService.executeCode(
-      codeHistoryId,
+      programId,
       program.code,
       program.language,
       program.version
