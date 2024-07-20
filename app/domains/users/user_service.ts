@@ -2,7 +2,7 @@ import { User, UserId } from '#domains/users/user_model'
 import { UserException, UserMessageException } from '#domains/users/user_exception'
 import { UserRepositoryImpl } from '#infrastructure/orm/lucid/repositories/user_repository_impl'
 import { inject } from '@adonisjs/core'
-import { SearchUserDto } from '#domains/users/user_dto'
+import { SearchUserDto, UpdateUserDto } from "#domains/users/user_dto";
 
 @inject()
 export class UserService {
@@ -56,6 +56,15 @@ export class UserService {
       return await this.userRepository.update(user)
     } catch (error) {
       console.error('Update Error:', error)
+      throw new UserException(UserMessageException.USER_UPDATE_FAILED)
+    }
+  }
+
+  async updatePartial(updateUserDto: UpdateUserDto, userId: UserId): Promise<User> {
+    try {
+      return await this.userRepository.updatePartial(userId, updateUserDto)
+    } catch (error) {
+      console.error('Update Partial Error:', error)
       throw new UserException(UserMessageException.USER_UPDATE_FAILED)
     }
   }
