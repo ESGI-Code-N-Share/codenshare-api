@@ -1,8 +1,12 @@
 import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
 import { UserService } from '#domains/users/user_service'
-import { SearchUserDto } from '#domains/users/user_dto'
-import { searchUserValidator } from '#presentation/rest/adonis/controllers/user_validator'
+import { SearchUserDto, UpdateUserDto } from '#domains/users/user_dto'
+import {
+  searchUserValidator,
+  updateUserValidator,
+} from '#presentation/rest/adonis/controllers/user_validator'
+import { UserId } from '#domains/users/user_model'
 
 @inject()
 export default class UserController {
@@ -41,6 +45,27 @@ export default class UserController {
     } catch (e) {
       console.error(e)
       return response.status(404)
+    }
+  }
+
+  async update({ request, response, params }: HttpContext) {
+    try {
+      const userId: UserId = params.userId
+      const body = request.body()
+
+      const validatedData = await updateUserValidator.validate(body)
+
+      const updatedUserDto: UpdateUserDto = {
+        firstname: validatedData.firstname,
+        lastname: validatedData.lastname,
+        overview: validatedData.overview,
+      }
+
+      const user = await this.userService.updatePartial(updatedUserDto, userId)
+      return response.status(200).send({ data: user })
+    } catch (e) {
+      console.error(e)
+      return response.status(400).send({ message: e.message })
     }
   }
 }
