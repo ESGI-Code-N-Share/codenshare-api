@@ -51,6 +51,7 @@ const userRouter = () => {
   router.get('/users/search', [UserController, 'search'])
   router.get('/users/:userId', [UserController, 'find'])
   router.delete('/users/:userId', [UserController, 'delete'])
+  router.patch('/users/:userId', [UserController, 'update'])
   conversationRouter()
 }
 

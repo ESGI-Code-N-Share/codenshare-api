@@ -77,7 +77,7 @@ export default class AuthController {
     }
   }
 
-  async verifyEmail({ params, request, response }: HttpContext) {
+  async verifyEmail({ params, response }: HttpContext) {
     try {
       const userId = params.id
       if (!userId) {
@@ -90,17 +90,7 @@ export default class AuthController {
 
       await this.authService.verifyEmail(userId)
 
-      const userAgent = request.header('User-Agent')
-      console.log('User-Agent:', userAgent)
-      const isMobile = userAgent && (userAgent.includes('Android') || userAgent.includes('okhttp'))
-
-      if (isMobile) {
-        console.log('Request is from a mobile device')
-        return response.redirect('codenshare://verify-email-success')
-      } else {
-        console.log('Request is from a web browser')
-        return response.redirect(`${env.get('FRONTEND_URL')}/email-verified`)
-      }
+      return response.redirect(`${env.get('FRONTEND_URL')}/email-verified`)
     } catch (e) {
       console.error(e)
       return response.status(400).send({

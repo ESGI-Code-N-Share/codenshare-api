@@ -2,6 +2,7 @@ import { type UserRepositoryPort } from '#domains/users/user_repository'
 import UserEntity from '../entities/user_entity.js'
 import { User, type UserId } from '#domains/users/user_model'
 import { DateTime } from 'luxon'
+import { UpdateUserDto } from "#domains/users/user_dto";
 
 export class UserRepositoryImpl implements UserRepositoryPort {
   async searchByEmail(query: string): Promise<User[]> {
@@ -66,6 +67,18 @@ export class UserRepositoryImpl implements UserRepositoryPort {
     userEntity.token = user.token
     userEntity.updatedAt = DateTime.now()
     userEntity.emailVerified = user.emailVerified
+
+    await userEntity.save()
+    return userEntity.toDomain()
+  }
+
+  async updatePartial(userId: UserId, updateUserDto: UpdateUserDto): Promise<User> {
+    const userEntity = await UserEntity.findOrFail(userId)
+
+    userEntity.firstname = updateUserDto.firstname
+    userEntity.lastname = updateUserDto.lastname
+    userEntity.overview = updateUserDto.overview || userEntity.overview
+    userEntity.updatedAt = DateTime.now()
 
     await userEntity.save()
     return userEntity.toDomain()

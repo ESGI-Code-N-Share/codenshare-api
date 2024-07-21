@@ -13,3 +13,10 @@ export interface CreateUserDto {
   birthdate: Date
   avatar?: string
 }
+
+export interface UpdateUserDto {
+  userId?: UserId
+  firstname: string
+  lastname: string
+  overview?: string
+}
