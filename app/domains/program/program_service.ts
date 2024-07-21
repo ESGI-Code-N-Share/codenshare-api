@@ -92,17 +92,11 @@ export class ProgramService implements ProgramServicePort {
     const editor = await this.userService.getById(userId)
     const program = await this.getById(id)
 
-    if (
-      program.programVisibility === 'private' &&
-      program.originalAuthor.userId !== editor.userId
-    ) {
+    if (program.programVisibility === 'private' && program.author.userId !== editor.userId) {
       throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
     }
 
-    if (
-      program.programVisibility === 'protected' &&
-      program.originalAuthor.userId !== editor.userId
-    ) {
+    if (program.programVisibility === 'protected' && program.author.userId !== editor.userId) {
       throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
     }
 
@@ -159,7 +153,8 @@ export class ProgramService implements ProgramServicePort {
       'private',
       program.originalAuthor,
       user,
-      program.createdAt
+      program.createdAt,
+      program.instructions
     )
 
     return this.programRepository.create(programImported.toEntity())

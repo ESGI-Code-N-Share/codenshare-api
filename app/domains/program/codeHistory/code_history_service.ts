@@ -10,6 +10,11 @@ export class CodeHistoryService {
   }
 
   async create(program: Program): Promise<void> {
+    const lastCodeHistory = await this.codeHistoryRepository.getLastByProgramId(program.programId)
+    if (lastCodeHistory?.code === program.code) {
+      return
+    }
+
     const codeHistory: CodeHistory = CodeHistory.new(program)
     await this.codeHistoryRepository.create(codeHistory.toEntity())
   }

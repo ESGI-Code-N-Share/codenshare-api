@@ -72,7 +72,8 @@ export class Program {
     programVisibility: ProgramVisibility,
     originalAuthor: User,
     author: User,
-    createdAt: Date
+    createdAt: Date,
+    instructions: ProgramInstructions
   ) {
     return new Program(
       randomUUID(),
@@ -86,7 +87,7 @@ export class Program {
       originalAuthor,
       author,
       [],
-      { inputs: [], outputs: [] },
+      instructions,
       createdAt
     )
   }
