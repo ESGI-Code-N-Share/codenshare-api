@@ -24,6 +24,10 @@ export class AuthService {
       throw new AuthException(AuthMessageException.USER_WITH_CREDENTIALS_NOT_FOUND)
     }
 
+    if (!user.emailVerified) {
+      throw new AuthException(AuthMessageException.EMAIL_NOT_VERIFIED)
+    }
+
     const tokenDuration = stayLogin ? '7d' : '15s'
     user.token = JwtUtil.generateToken({ id: user.userId, email: user.email }, tokenDuration)
     await this.userService.update(user)
