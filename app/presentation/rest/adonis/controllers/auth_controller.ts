@@ -50,7 +50,13 @@ export default class AuthController {
         birthdate: new Date(validData.birthdate),
         emailVerified: defaultEmailVerified,
       }
-      const userId = await this.authService.register(registerAuthDto)
+
+      const defaultHost = env.get('HOST')
+      const defaultPort = env.get('PORT')
+      const host = request.host() || `${defaultHost}:${defaultPort}`
+      const protocol = request.protocol() || 'http'
+
+      const userId = await this.authService.register(registerAuthDto, host, protocol)
       return response.status(201).json({ data: userId })
     } catch (e) {
       console.error('Registration error:', e)

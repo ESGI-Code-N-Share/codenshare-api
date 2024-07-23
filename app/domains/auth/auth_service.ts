@@ -34,7 +34,11 @@ export class AuthService {
     return user
   }
 
-  async register(registerAuthDto: RegisterAuthDto): Promise<UserId> {
+  async register(
+    registerAuthDto: RegisterAuthDto,
+    host: string,
+    protocol: string
+  ): Promise<UserId> {
     const {
       email,
       password,
@@ -65,7 +69,8 @@ export class AuthService {
         emailVerified
       )
       const createdUser = await this.userService.create(newUser)
-      await EmailService.sendVerificationEmail(createdUser)
+
+      await EmailService.sendVerificationEmail(createdUser, host, protocol)
       return createdUser.userId
     } catch (error) {
       console.error('Registration Error:', error)
