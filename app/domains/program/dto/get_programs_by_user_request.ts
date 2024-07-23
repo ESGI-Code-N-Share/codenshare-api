@@ -8,4 +8,5 @@ export interface GetProgramsRequest {
   originalAuthorId: string
   visibility: string
   createdAt: string
+  hasInstructions: boolean
 }

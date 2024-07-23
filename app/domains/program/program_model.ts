@@ -176,6 +176,7 @@ export class Program {
       visibility: this.programVisibility.toString(),
       createdAt: this.createdAt.toISOString(),
       language: this.language,
+      hasInstructions: this.instructions.inputs.length > 0 && this.instructions.outputs.length > 0,
     }
   }
 
