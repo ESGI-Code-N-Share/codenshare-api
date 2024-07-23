@@ -70,7 +70,9 @@ export class AuthService {
       )
       const createdUser = await this.userService.create(newUser)
 
-      await EmailService.sendVerificationEmail(createdUser, host, protocol)
+      if (host !== '') {
+        await EmailService.sendVerificationEmail(createdUser, host, protocol)
+      }
       return createdUser.userId
     } catch (error) {
       console.error('Registration Error:', error)

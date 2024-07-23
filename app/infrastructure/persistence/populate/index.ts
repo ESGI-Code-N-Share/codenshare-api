@@ -41,14 +41,18 @@ export class Populate {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     for (const _ of Array.from({ length: count })) {
       console.log(`[Populate - ${index + 1}/${count}] Generating ${count} random users`)
-      const userId = await this.authService.register({
-        firstname: faker.person.firstName(),
-        lastname: faker.person.lastName(),
-        email: faker.internet.email().toLowerCase(),
-        password: 'admincns',
-        emailVerified: faker.datatype.boolean(),
-        birthdate: faker.date.past({ years: faker.number.int({ min: 18, max: 60 }) }),
-      })
+      const userId = await this.authService.register(
+        {
+          firstname: faker.person.firstName(),
+          lastname: faker.person.lastName(),
+          email: faker.internet.email().toLowerCase(),
+          password: 'admincns',
+          emailVerified: faker.datatype.boolean(),
+          birthdate: faker.date.past({ years: faker.number.int({ min: 18, max: 60 }) }),
+        },
+        '',
+        ''
+      )
 
       const user = await this.userService.getById(userId)
 
