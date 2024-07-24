@@ -163,7 +163,7 @@ export class ProgramService implements ProgramServicePort {
   async execute(programId: ProgramId, userId: UserId): Promise<string> {
     const program = await this.programRepository.getById(programId)
 
-    if (program.programVisibility === 'private' && program.originalAuthor.userId !== userId) {
+    if (program.programVisibility === 'private' && program.author.userId !== userId) {
       throw new ProgramException(ProgramMessageException.PERMISSION_DENIED)
     }
 
