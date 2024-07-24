@@ -28,6 +28,16 @@ export default class PostController {
     }
   }
 
+  async find({ params, response }: HttpContext) {
+    try {
+      const post = await this.postService.getById(params.postId)
+      return response.json({ data: post })
+    } catch (e) {
+      console.error(e)
+      return response.status(404).json({ data: e.message })
+    }
+  }
+
   async create({ request, response }: HttpContext) {
     try {
       const data = request.all()

@@ -78,6 +78,7 @@ const postLikeRouter = () => {
 
 const postRouter = () => {
   router.get('/posts', [PostController, 'list'])
+  router.get('/posts/:postId', [PostController, 'find'])
   router.post('/posts', [PostController, 'create'])
   router.delete('/posts/:postId', [PostController, 'delete'])
   postLikeRouter()
